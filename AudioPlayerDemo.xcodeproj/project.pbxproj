@@ -14,6 +14,9 @@
 		CE19BC9821C3C18C0032AFEC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE19BC9621C3C18C0032AFEC /* LaunchScreen.storyboard */; };
 		CE19BCA321C3C18C0032AFEC /* AudioPlayerDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19BCA221C3C18C0032AFEC /* AudioPlayerDemoTests.swift */; };
 		CE19BCAE21C3C18C0032AFEC /* AudioPlayerDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19BCAD21C3C18C0032AFEC /* AudioPlayerDemoUITests.swift */; };
+		CE19BCBC21C3C1C70032AFEC /* AudioPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE19BCBB21C3C1C70032AFEC /* AudioPlayer.storyboard */; };
+		CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */; };
+		CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		CE19BCA921C3C18C0032AFEC /* AudioPlayerDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AudioPlayerDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE19BCAD21C3C18C0032AFEC /* AudioPlayerDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerDemoUITests.swift; sourceTree = "<group>"; };
 		CE19BCAF21C3C18C0032AFEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CE19BCBB21C3C1C70032AFEC /* AudioPlayer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AudioPlayer.storyboard; sourceTree = "<group>"; };
+		CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsListViewController.swift; sourceTree = "<group>"; };
+		CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +103,11 @@
 		CE19BC8C21C3C18A0032AFEC /* AudioPlayerDemo */ = {
 			isa = PBXGroup;
 			children = (
-				CE19BC8D21C3C18A0032AFEC /* AppDelegate.swift */,
+				CE2732EB21C75C250043F41C /* Storyboards */,
+				CE2732EA21C75C160043F41C /* Custom Cells */,
+				CE2732E921C75C070043F41C /* View Controllers */,
 				CE19BC8F21C3C18A0032AFEC /* ViewController.swift */,
+				CE19BC8D21C3C18A0032AFEC /* AppDelegate.swift */,
 				CE19BC9121C3C18A0032AFEC /* Main.storyboard */,
 				CE19BC9421C3C18C0032AFEC /* Assets.xcassets */,
 				CE19BC9621C3C18C0032AFEC /* LaunchScreen.storyboard */,
@@ -123,6 +132,30 @@
 				CE19BCAF21C3C18C0032AFEC /* Info.plist */,
 			);
 			path = AudioPlayerDemoUITests;
+			sourceTree = "<group>";
+		};
+		CE2732E921C75C070043F41C /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		CE2732EA21C75C160043F41C /* Custom Cells */ = {
+			isa = PBXGroup;
+			children = (
+				CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */,
+			);
+			path = "Custom Cells";
+			sourceTree = "<group>";
+		};
+		CE2732EB21C75C250043F41C /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				CE19BCBB21C3C1C70032AFEC /* AudioPlayer.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,6 +262,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE19BCBC21C3C1C70032AFEC /* AudioPlayer.storyboard in Resources */,
 				CE19BC9821C3C18C0032AFEC /* LaunchScreen.storyboard in Resources */,
 				CE19BC9521C3C18C0032AFEC /* Assets.xcassets in Resources */,
 				CE19BC9321C3C18A0032AFEC /* Main.storyboard in Resources */,
@@ -258,6 +292,8 @@
 			files = (
 				CE19BC9021C3C18A0032AFEC /* ViewController.swift in Sources */,
 				CE19BC8E21C3C18A0032AFEC /* AppDelegate.swift in Sources */,
+				CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */,
+				CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +469,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B865P7W52D;
 				INFOPLIST_FILE = AudioPlayerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -441,7 +477,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.newitventure.AudioPlayerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = wildCardNewITVenture;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -452,7 +488,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B865P7W52D;
 				INFOPLIST_FILE = AudioPlayerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -460,7 +496,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.newitventure.AudioPlayerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = wildCardNewITVenture;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
