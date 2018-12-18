@@ -15,6 +15,12 @@
 		CE19BCA321C3C18C0032AFEC /* AudioPlayerDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19BCA221C3C18C0032AFEC /* AudioPlayerDemoTests.swift */; };
 		CE19BCAE21C3C18C0032AFEC /* AudioPlayerDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE19BCAD21C3C18C0032AFEC /* AudioPlayerDemoUITests.swift */; };
 		CE19BCBC21C3C1C70032AFEC /* AudioPlayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE19BCBB21C3C1C70032AFEC /* AudioPlayer.storyboard */; };
+		CE25BF0221C8A4D70047FEBB /* AudioStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0121C8A4D70047FEBB /* AudioStation.swift */; };
+		CE25BF0521C8A93C0047FEBB /* Player Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0421C8A93C0047FEBB /* Player Setup.swift */; };
+		CE25BF0721C8AB990047FEBB /* Data Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0621C8AB990047FEBB /* Data Manager.swift */; };
+		CE25BF0A21C8B08F0047FEBB /* AudioSamples.json in Resources */ = {isa = PBXBuildFile; fileRef = CE25BF0921C8B08F0047FEBB /* AudioSamples.json */; };
+		CE25BF0E21C8C0CC0047FEBB /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0D21C8C0CC0047FEBB /* MusicPlayer.swift */; };
+		CE25BF1021C90C440047FEBB /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */; };
 		CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */; };
 		CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -51,6 +57,12 @@
 		CE19BCAD21C3C18C0032AFEC /* AudioPlayerDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerDemoUITests.swift; sourceTree = "<group>"; };
 		CE19BCAF21C3C18C0032AFEC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE19BCBB21C3C1C70032AFEC /* AudioPlayer.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AudioPlayer.storyboard; sourceTree = "<group>"; };
+		CE25BF0121C8A4D70047FEBB /* AudioStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioStation.swift; sourceTree = "<group>"; };
+		CE25BF0421C8A93C0047FEBB /* Player Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Player Setup.swift"; sourceTree = "<group>"; };
+		CE25BF0621C8AB990047FEBB /* Data Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data Manager.swift"; sourceTree = "<group>"; };
+		CE25BF0921C8B08F0047FEBB /* AudioSamples.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AudioSamples.json; sourceTree = "<group>"; };
+		CE25BF0D21C8C0CC0047FEBB /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
+		CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsListViewController.swift; sourceTree = "<group>"; };
 		CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,6 +115,9 @@
 		CE19BC8C21C3C18A0032AFEC /* AudioPlayerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CE25BF0821C8B03E0047FEBB /* Sample Data */,
+				CE25BF0321C8A91C0047FEBB /* Audio Player Setup */,
+				CE25BF0021C8A4AB0047FEBB /* Model */,
 				CE2732EB21C75C250043F41C /* Storyboards */,
 				CE2732EA21C75C160043F41C /* Custom Cells */,
 				CE2732E921C75C070043F41C /* View Controllers */,
@@ -112,6 +127,9 @@
 				CE19BC9421C3C18C0032AFEC /* Assets.xcassets */,
 				CE19BC9621C3C18C0032AFEC /* LaunchScreen.storyboard */,
 				CE19BC9921C3C18C0032AFEC /* Info.plist */,
+				CE25BF0621C8AB990047FEBB /* Data Manager.swift */,
+				CE25BF0B21C8C00F0047FEBB /* Library */,
+				CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */,
 			);
 			path = AudioPlayerDemo;
 			sourceTree = "<group>";
@@ -132,6 +150,46 @@
 				CE19BCAF21C3C18C0032AFEC /* Info.plist */,
 			);
 			path = AudioPlayerDemoUITests;
+			sourceTree = "<group>";
+		};
+		CE25BF0021C8A4AB0047FEBB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE25BF0121C8A4D70047FEBB /* AudioStation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE25BF0321C8A91C0047FEBB /* Audio Player Setup */ = {
+			isa = PBXGroup;
+			children = (
+				CE25BF0421C8A93C0047FEBB /* Player Setup.swift */,
+			);
+			path = "Audio Player Setup";
+			sourceTree = "<group>";
+		};
+		CE25BF0821C8B03E0047FEBB /* Sample Data */ = {
+			isa = PBXGroup;
+			children = (
+				CE25BF0921C8B08F0047FEBB /* AudioSamples.json */,
+			);
+			path = "Sample Data";
+			sourceTree = "<group>";
+		};
+		CE25BF0B21C8C00F0047FEBB /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				CE25BF0C21C8C0240047FEBB /* MusicPlayer */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		CE25BF0C21C8C0240047FEBB /* MusicPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				CE25BF0D21C8C0CC0047FEBB /* MusicPlayer.swift */,
+			);
+			path = MusicPlayer;
 			sourceTree = "<group>";
 		};
 		CE2732E921C75C070043F41C /* View Controllers */ = {
@@ -265,6 +323,7 @@
 				CE19BCBC21C3C1C70032AFEC /* AudioPlayer.storyboard in Resources */,
 				CE19BC9821C3C18C0032AFEC /* LaunchScreen.storyboard in Resources */,
 				CE19BC9521C3C18C0032AFEC /* Assets.xcassets in Resources */,
+				CE25BF0A21C8B08F0047FEBB /* AudioSamples.json in Resources */,
 				CE19BC9321C3C18A0032AFEC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,10 +349,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE25BF0721C8AB990047FEBB /* Data Manager.swift in Sources */,
 				CE19BC9021C3C18A0032AFEC /* ViewController.swift in Sources */,
+				CE25BF1021C90C440047FEBB /* AudioPlayer.swift in Sources */,
+				CE25BF0E21C8C0CC0047FEBB /* MusicPlayer.swift in Sources */,
 				CE19BC8E21C3C18A0032AFEC /* AppDelegate.swift in Sources */,
+				CE25BF0221C8A4D70047FEBB /* AudioStation.swift in Sources */,
 				CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */,
 				CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */,
+				CE25BF0521C8A93C0047FEBB /* Player Setup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
