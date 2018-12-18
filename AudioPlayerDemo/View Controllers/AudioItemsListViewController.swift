@@ -14,7 +14,7 @@ class AudioItemsListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     //MARK:- properties
-    //let musicPlayer = MusicPlayer()
+    let musicPlayer = AudioPlayer()
     
     //MARK:- Lists
     var audioItems = [FMStation]() {
@@ -30,6 +30,7 @@ class AudioItemsListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = self
+        self.tableView.delegate = self
         self.getAudioItems()
 
         // Do any additional setup after loading the view.
@@ -88,6 +89,7 @@ extension AudioItemsListViewController: UITableViewDataSource {
 extension AudioItemsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
+        musicPlayer.player.musicUrl = audioUrl
     }
 }

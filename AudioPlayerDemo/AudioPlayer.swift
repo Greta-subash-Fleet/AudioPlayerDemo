@@ -23,19 +23,22 @@ class AudioPlayer {
     let player = MusicPlayer.shared
     
     init() {
-        
+        player.delegate = self
     }
 }
 
-extension AudioPlayer: AudioPlayerDelegate {
-    
-    func playbackStateDidChange(_ musicPlaybackState: MusicPlaybackState) {
-        <#code#>
+
+extension AudioPlayer: MusicPlayerDelegate {
+    func musicPlayer(_ player: MusicPlayer, musicPlaybackStateDidChange state: MusicPlaybackState) {
+        delegate?.playbackStateDidChange(state)
     }
     
-    func playerStateDidChange(_ musicPlayerState: MusicPlayerState) {
-        <#code#>
+    func musicPlayer(_ player: MusicPlayer, musicPlayerStateDidChange state: MusicPlayerState) {
+        delegate?.playerStateDidChange(state)
     }
+    
+    
+
     
     
 

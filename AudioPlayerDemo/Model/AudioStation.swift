@@ -11,11 +11,11 @@ import Foundation
 struct FMStation: Codable {
     
     var name: String?
-    var link: String?
+    var streamURL: String?
     
-    init(name: String, link: String) {
+    init(name: String, streamURL: String) {
         self.name = name
-        self.link = link
+        self.streamURL = streamURL
         
     }
     
@@ -24,6 +24,6 @@ struct FMStation: Codable {
 extension FMStation: Equatable {
     
     static func ==(lhs: FMStation, rhs: FMStation) -> Bool {
-        return (lhs.name == rhs.name) && (lhs.link == rhs.link)
+        return (lhs.name == rhs.name) && (lhs.streamURL == rhs.streamURL)
     }
 }

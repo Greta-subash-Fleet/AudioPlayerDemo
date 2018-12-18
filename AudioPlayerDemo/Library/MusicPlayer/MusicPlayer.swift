@@ -222,7 +222,11 @@ open class MusicPlayer: NSObject {
     //MARK:- Private helper methods
     private func musicUrlDidChange(url: URL?) {
         self.resetMusicPlayer()
-        guard let url = url else { return }
+        guard let url = url else {
+            playerState = .error
+            return
+            
+        }
         playerState = .loading
         preparePlayer(with: AVAsset(url: url)) { (success, asset) in
             guard success, let asset = asset else {
