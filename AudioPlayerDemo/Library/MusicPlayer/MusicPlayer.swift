@@ -199,6 +199,7 @@ open class MusicPlayer: NSObject {
         musicPlaybackState = .paused
     }
     
+    
     open func stop() {
         guard let player = player else { return }
         player.replaceCurrentItem(with: nil)
@@ -207,8 +208,9 @@ open class MusicPlayer: NSObject {
     
     
     open func togglePlaying() {
-        
+        isPlaying ? pause() : play()
     }
+    
     
     open func isSuffle() {
         
@@ -247,6 +249,7 @@ open class MusicPlayer: NSObject {
             player = AVPlayer()
         }
         playerItem = AVPlayerItem(asset: asset)
+        self.play()
     }
     
     

@@ -64,12 +64,13 @@
                                                                 <constraint firstItem="L86-uS-KHY" firstAttribute="height" secondItem="G5f-Lt-D8U" secondAttribute="height" id="ZNI-np-RXv"/>
                                                             </constraints>
                                                         </stackView>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gZI-3Q-Lu1">
-                                                            <rect key="frame" x="322" y="37.5" width="45" height="30"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gZI-3Q-Lu1">
+                                                            <rect key="frame" x="322" y="30" width="45" height="45"/>
                                                             <constraints>
+                                                                <constraint firstAttribute="height" constant="45" id="DJl-dB-FL2"/>
                                                                 <constraint firstAttribute="width" constant="45" id="xOU-ML-PQO"/>
                                                             </constraints>
-                                                            <state key="normal" title="Button"/>
+                                                            <state key="normal" title="Button" image="audio_play"/>
                                                         </button>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -174,45 +175,45 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="nzi-lV-aLK">
                                         <rect key="frame" x="4" y="67" width="367" height="45"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TIo-qN-GfK">
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TIo-qN-GfK">
                                                 <rect key="frame" x="0.0" y="0.0" width="45" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="45" id="53w-qS-bZM"/>
                                                     <constraint firstAttribute="height" constant="45" id="9mN-AH-QhI"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Button" image="audio_repeat"/>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOj-FX-Gn7">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOj-FX-Gn7">
                                                 <rect key="frame" x="80.5" y="0.0" width="45" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="DBR-4n-pNf"/>
                                                     <constraint firstAttribute="width" constant="45" id="uyR-V6-ebK"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Button" image="audio_previous"/>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pg3-XF-kcl">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pg3-XF-kcl">
                                                 <rect key="frame" x="161" y="0.0" width="45" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="45" id="YBQ-NV-9oO"/>
                                                     <constraint firstAttribute="height" constant="45" id="og3-0K-Wos"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Button" image="audio_play"/>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAL-bH-ewb">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAL-bH-ewb">
                                                 <rect key="frame" x="241.5" y="0.0" width="45" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="nXL-4c-xah"/>
                                                     <constraint firstAttribute="width" constant="45" id="zYg-QQ-xLj"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Button" image="audio_next"/>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWN-dk-NhV">
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWN-dk-NhV">
                                                 <rect key="frame" x="322" y="0.0" width="45" height="45"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="jSp-kD-AwR"/>
                                                     <constraint firstAttribute="width" constant="45" id="nVt-Eo-flq"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Button" image="audio_shuffle"/>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -311,5 +312,10 @@
     </scenes>
     <resources>
         <image name="LedZep" width="256" height="256"/>
+        <image name="audio_next" width="512" height="512"/>
+        <image name="audio_play" width="409.60000610351562" height="409.60000610351562"/>
+        <image name="audio_previous" width="512" height="512"/>
+        <image name="audio_repeat" width="45" height="45"/>
+        <image name="audio_shuffle" width="45" height="45"/>
     </resources>
 </document>

@@ -2,4 +2,54 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AudioPlayerDemo/View Controllers/AudioItemsListViewController.swift"
+            timestampString = "566909066.1725971"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "setUpRemoteCommandCenter()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AudioPlayerDemo.AudioItemsListViewController.setUpRemoteCommandCenter() -&gt; ()"
+                  moduleName = "AudioPlayerDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/Desktop/Demo/AudioPlayerDemo/AudioPlayerDemo/View%20Controllers/AudioItemsListViewController.swift"
+                  timestampString = "566909066.644554"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "984">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #5 (__C.MPRemoteCommandEvent) -&gt; __C.MPRemoteCommandHandlerStatus in AudioPlayerDemo.AudioItemsListViewController.setUpRemoteCommandCenter() -&gt; ()"
+                  moduleName = "AudioPlayerDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/user/Desktop/Demo/AudioPlayerDemo/AudioPlayerDemo/View%20Controllers/AudioItemsListViewController.swift"
+                  timestampString = "566909066.647588"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

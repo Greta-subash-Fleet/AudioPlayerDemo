@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
+import MediaPlayer
 
 class AudioItemsListViewController: UIViewController {
     
@@ -32,6 +35,7 @@ class AudioItemsListViewController: UIViewController {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.getAudioItems()
+        self.setUpAudioSession()
 
         // Do any additional setup after loading the view.
     }
@@ -63,6 +67,115 @@ class AudioItemsListViewController: UIViewController {
             self.audioItems = audioArray
         }
     }
+    
+    ///set up audio session
+    func setUpAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: .moviePlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            debugPrint("AVAudio session active.")
+            self.setUpRemoteCommandCenter()
+            self.showMediaInfoInRemoteControl()
+        } catch {
+            if kDebugLog { print("audioSession could not be activated") }
+            debugPrint("Error: \(error)")
+        }
+    }
+    
+    //MARK:- Remote command center controls
+    func setUpRemoteCommandCenter() {
+        
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.playCommand.addTarget { event in
+            return .success
+            
+        }
+        
+        commandCenter.pauseCommand.addTarget { event in
+            return .success
+            
+        }
+        
+        commandCenter.previousTrackCommand.addTarget { event in
+            return .success
+            
+        }
+        
+        commandCenter.nextTrackCommand.addTarget { event in
+            return .success
+        }
+        
+        commandCenter.togglePlayPauseCommand.addTarget { event in
+            return .success
+        }
+        
+        commandCenter.changeRepeatModeCommand.addTarget { event in
+            return .success
+        }
+        
+        commandCenter.changeShuffleModeCommand.addTarget { event in
+            return .success
+            
+        }
+        
+        
+    }
+    
+    // MARK: - Remote Controls
+    
+    override func remoteControlReceived(with event: UIEvent?) {
+        super.remoteControlReceived(with: event)
+        
+        guard let event = event, event.type == UIEvent.EventType.remoteControl else { return }
+        
+        switch event.subtype {
+            
+        case .remoteControlPlay:
+            MusicPlayer.shared.play()
+            
+        case .remoteControlPause:
+            MusicPlayer.shared.pause()
+            
+        case .remoteControlTogglePlayPause:
+            MusicPlayer.shared.togglePlaying()
+            
+        case .remoteControlNextTrack:
+            print("Next")
+            
+        case .remoteControlPreviousTrack:
+            print("Previous")
+            
+            
+        default:
+            break
+        }
+    }
+    
+    private func showMediaInfoInRemoteControl() {
+        var nowPlayingInfo = [String : Any]()
+        
+        nowPlayingInfo[MPMediaItemPropertyTitle] = "Audio Player"
+        //nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.currentItem?.currentTime().seconds
+        //nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = player?.currentItem?.asset.duration.seconds
+        //nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player?.rate
+        
+        if let image = UIImage(named: "LedZep") {
+            if #available(iOS 10.0, *) {
+                nowPlayingInfo[MPMediaItemPropertyArtwork] =
+                    MPMediaItemArtwork(boundsSize: image.size) { size in
+                        return image
+                }
+            } else {
+                // Fallback on earlier versions
+                nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: image)
+                
+            }
+        }
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+
     
 
 
