@@ -23,6 +23,7 @@
 		CE25BF1021C90C440047FEBB /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */; };
 		CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */; };
 		CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */; };
+		CECE7A7D21CB5CD8005C0DDB /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE7A7C21CB5CD8005C0DDB /* PlayerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsListViewController.swift; sourceTree = "<group>"; };
 		CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsTableViewCell.swift; sourceTree = "<group>"; };
+		CECE7A7C21CB5CD8005C0DDB /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */,
+				CECE7A7C21CB5CD8005C0DDB /* PlayerViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -363,6 +366,7 @@
 				CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */,
 				CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */,
 				CE25BF0521C8A93C0047FEBB /* Player Setup.swift in Sources */,
+				CECE7A7D21CB5CD8005C0DDB /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -175,6 +175,13 @@ class AudioItemsListViewController: UIViewController {
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
+    
+    fileprivate func showMiniPlayer() {
+        let storyboard = UIStoryboard.init(name: "AudioPlayer", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "PlayerVC") as! PlayerViewController
+        self.present(vc, animated: true)
+        
+    }
 
     
 
@@ -202,7 +209,27 @@ extension AudioItemsListViewController: UITableViewDataSource {
 extension AudioItemsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
-        musicPlayer.player.musicUrl = audioUrl
+//        guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
+//        musicPlayer.player.musicUrl = audioUrl
+        
+        self.showMiniPlayer()
+        
     }
+}
+
+
+extension AudioItemsListViewController: PlayingVCDelegate {
+    func didPressPlayButton() {
+        musicPlayer.player.togglePlaying()
+    }
+    
+    func didPressPreviousButton() {
+        print("Play previous")
+    }
+    
+    func didPressNextButton() {
+        print("Play next")
+    }
+    
+    
 }
