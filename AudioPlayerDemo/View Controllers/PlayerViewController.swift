@@ -52,6 +52,11 @@ class PlayerViewController: UIViewController {
     //MARK:-
     weak var delegate: PlayingVCDelegate?
     
+    var currentAudioStation: FMStation?
+    
+    let mPlayer = MusicPlayer.shared
+    var newPlayer = true
+    
     fileprivate var topPositionOfPlayerView: CGFloat = -70
     
     fileprivate var bottomPositionOfPlayerView: CGFloat {
@@ -75,8 +80,22 @@ class PlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addPanGesture()
+        
+        newPlayer ? playerChanged() : musicPlayerPlayStateDidChange(mPlayer.playerState, animate: false)
+
 
         // Do any additional setup after loading the view.
+    }
+    
+    func loadStation(audioStation: FMStation?, isNew: Bool) {
+        guard let audioStation = audioStation else { return }
+        currentAudioStation = audioStation
+        newPlayer = isNew
+    }
+    
+    func playerChanged() {
+        guard let musicUrlString = currentAudioStation?.streamURL else { return }
+        mPlayer.musicUrl = URL(string: musicUrlString)
     }
     
     //MARK:- Private methods
@@ -163,6 +182,36 @@ class PlayerViewController: UIViewController {
     
     //MARK:- IB Actions in mini-player top
     
+    
+    //
+    func musicPlayerPlaybackStateDidChange(_ musicPlaybackState: MusicPlaybackState, animate: Bool) {
+        var message: String?
+        
+        switch musicPlaybackState {
+        case .paused:
+            message = ""
+        default:
+            message = ""
+        }
+        
+    }
+    
+    func musicPlayerPlayStateDidChange(_ musicPlayerState: MusicPlayerState, animate: Bool) {
+        var message: String?
+        switch musicPlayerState {
+            
+        case .readyToPlay, .loadingFinished:
+            message = ""
+            
+        default:
+            message = ""
+        }
+        musicPlayerPlaybackStateDidChange(mPlayer.musicPlaybackState, animate: animate)
+    }
+    
+    func isAudioPlayingChanged(_ isPlaying: Bool) {
+        buttonPlayPause.isSelected = isPlaying
+    }
     
 
 }

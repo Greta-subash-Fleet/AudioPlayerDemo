@@ -19,6 +19,8 @@ class AudioItemsListViewController: UIViewController {
     //MARK:- properties
     let musicPlayer = AudioPlayer()
     
+    weak var playerViewController: PlayerViewController?
+    
     //MARK:- Lists
     var audioItems = [FMStation]() {
         didSet {
@@ -36,6 +38,10 @@ class AudioItemsListViewController: UIViewController {
         self.tableView.delegate = self
         self.getAudioItems()
         self.setUpAudioSession()
+        musicPlayer.delegate = self
+        
+        tableView.backgroundColor = .clear
+        tableView.backgroundView = nil
 
         // Do any additional setup after loading the view.
     }
@@ -176,13 +182,21 @@ class AudioItemsListViewController: UIViewController {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
-    fileprivate func showMiniPlayer() {
+    fileprivate func showMiniPlayer(sender: IndexPath) {
         let storyboard = UIStoryboard.init(name: "AudioPlayer", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "PlayerVC") as! PlayerViewController
-        self.present(vc, animated: true)
+        playerViewController = storyboard.instantiateViewController(withIdentifier: "PlayerVC") as? PlayerViewController
+        let isNew: Bool?
+        if let indexPath = sender as? IndexPath {
+            musicPlayer.audioStation = audioItems[indexPath.row]
+            isNew = true
+        } else {
+            isNew = false
+        }
+        playerViewController?.loadStation(audioStation: musicPlayer.audioStation, isNew: isNew!)
+        playerViewController?.delegate = self
+        self.present(playerViewController!, animated: true)
         
     }
-
     
 
 
@@ -202,6 +216,8 @@ extension AudioItemsListViewController: UITableViewDataSource {
         return cell
     }
     
+
+    
     
     
 }
@@ -212,13 +228,27 @@ extension AudioItemsListViewController: UITableViewDelegate {
 //        guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
 //        musicPlayer.player.musicUrl = audioUrl
         
-        self.showMiniPlayer()
+        self.showMiniPlayer(sender: indexPath)
         
     }
 }
 
+extension AudioItemsListViewController: AudioPlayerDelegate {
+    func playerStateDidChange(_ musicPlayerState: MusicPlayerState) {
+        playerViewController?.musicPlayerPlayStateDidChange(musicPlayerState, animate: true)
+    }
+    
+    func playbackStateDidChange(_ musicPlaybackState: MusicPlaybackState) {
+        playerViewController?.musicPlayerPlaybackStateDidChange(musicPlaybackState, animate: true)
+    }
+    
+    
+    
+}
+
 
 extension AudioItemsListViewController: PlayingVCDelegate {
+    
     func didPressPlayButton() {
         musicPlayer.player.togglePlaying()
     }

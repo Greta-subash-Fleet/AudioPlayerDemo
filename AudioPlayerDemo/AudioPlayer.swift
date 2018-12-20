@@ -21,6 +21,7 @@ class AudioPlayer {
     weak var delegate: AudioPlayerDelegate?
     
     let player = MusicPlayer.shared
+    var audioStation: FMStation?
     
     init() {
         player.delegate = self
