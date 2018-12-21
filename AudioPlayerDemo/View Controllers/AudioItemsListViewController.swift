@@ -158,6 +158,14 @@ class AudioItemsListViewController: UIViewController {
         }
     }
     
+    //get index of audio items
+    private func getAudioStationsCount(of station: FMStation) -> Int? {
+        let audioStation = station
+        guard let  audioStationIndex = audioItems.index(of: audioStation) else { return nil }
+        return audioStationIndex
+        
+    }
+    
     private func showMediaInfoInRemoteControl() {
         var nowPlayingInfo = [String : Any]()
         
@@ -194,7 +202,9 @@ class AudioItemsListViewController: UIViewController {
         }
         playerViewController?.loadStation(audioStation: musicPlayer.audioStation, isNew: isNew!)
         playerViewController?.delegate = self
-        self.present(playerViewController!, animated: true)
+        playerViewController?.modalTransitionStyle = .flipHorizontal
+        playerViewController?.modalPresentationStyle = .overCurrentContext
+        self.present(playerViewController!, animated: false)
         
     }
     
@@ -255,10 +265,37 @@ extension AudioItemsListViewController: PlayingVCDelegate {
     
     func didPressPreviousButton() {
         print("Play previous")
+        //radioPlayer.station = (index + 1 == stations.count) ? stations[0] : stations[index + 1]
+        guard let audioIndex = getAudioStationsCount(of: musicPlayer.audioStation!) else { return }
+        if audioIndex - 1 <= 0 {
+           playerViewController?.buttonPrevious.isEnabled = false
+        }
+        
+        
     }
     
     func didPressNextButton() {
         print("Play next")
+        guard let audioIndex = getAudioStationsCount(of: musicPlayer.audioStation!) else { return }
+        if audioIndex + 1 >= audioItems.count {
+            self.changeAudioItem()
+        } else {
+            playerViewController?.buttonNext.isEnabled = false
+        }
+        
+        
+    }
+    
+    
+    func changeAudioItem() {
+        if let audioPlayingVC = playerViewController {
+            audioPlayingVC.loadStation(audioStation: musicPlayer.audioStation, isNew: false)
+
+            
+        } else if let audioStation = musicPlayer.audioStation {
+            musicPlayer.player.musicUrl = URL(string: audioStation.streamURL ?? "")
+        }
+
     }
     
     

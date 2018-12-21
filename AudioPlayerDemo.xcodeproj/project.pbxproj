@@ -23,6 +23,10 @@
 		CE25BF1021C90C440047FEBB /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */; };
 		CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */; };
 		CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */; };
+		CEAA729821CCADA600A3EA01 /* MiniPlayer.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAA729721CCADA600A3EA01 /* MiniPlayer.xib */; };
+		CEAA729A21CCAFD000A3EA01 /* MiniPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA729921CCAFD000A3EA01 /* MiniPlayer.swift */; };
+		CEAA72A021CCC63300A3EA01 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA729F21CCC63300A3EA01 /* Transition.swift */; };
+		CEAA72A221CCC8B800A3EA01 /* PullDownAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA72A121CCC8B800A3EA01 /* PullDownAnimation.swift */; };
 		CECE7A7D21CB5CD8005C0DDB /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECE7A7C21CB5CD8005C0DDB /* PlayerViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +70,10 @@
 		CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsListViewController.swift; sourceTree = "<group>"; };
 		CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsTableViewCell.swift; sourceTree = "<group>"; };
+		CEAA729721CCADA600A3EA01 /* MiniPlayer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MiniPlayer.xib; sourceTree = "<group>"; };
+		CEAA729921CCAFD000A3EA01 /* MiniPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayer.swift; sourceTree = "<group>"; };
+		CEAA729F21CCC63300A3EA01 /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
+		CEAA72A121CCC8B800A3EA01 /* PullDownAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullDownAnimation.swift; sourceTree = "<group>"; };
 		CECE7A7C21CB5CD8005C0DDB /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +125,8 @@
 		CE19BC8C21C3C18A0032AFEC /* AudioPlayerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				CEAA729721CCADA600A3EA01 /* MiniPlayer.xib */,
+				CEAA729921CCAFD000A3EA01 /* MiniPlayer.swift */,
 				CE25BF0821C8B03E0047FEBB /* Sample Data */,
 				CE25BF0321C8A91C0047FEBB /* Audio Player Setup */,
 				CE25BF0021C8A4AB0047FEBB /* Model */,
@@ -182,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				CE25BF0C21C8C0240047FEBB /* MusicPlayer */,
+				CEAA729E21CCC58100A3EA01 /* Animations */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -217,6 +228,15 @@
 				CE19BCBB21C3C1C70032AFEC /* AudioPlayer.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		CEAA729E21CCC58100A3EA01 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				CEAA729F21CCC63300A3EA01 /* Transition.swift */,
+				CEAA72A121CCC8B800A3EA01 /* PullDownAnimation.swift */,
+			);
+			path = Animations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,6 +351,7 @@
 				CE19BCBC21C3C1C70032AFEC /* AudioPlayer.storyboard in Resources */,
 				CE19BC9821C3C18C0032AFEC /* LaunchScreen.storyboard in Resources */,
 				CE19BC9521C3C18C0032AFEC /* Assets.xcassets in Resources */,
+				CEAA729821CCADA600A3EA01 /* MiniPlayer.xib in Resources */,
 				CE25BF0A21C8B08F0047FEBB /* AudioSamples.json in Resources */,
 				CE19BC9321C3C18A0032AFEC /* Main.storyboard in Resources */,
 			);
@@ -363,9 +384,12 @@
 				CE25BF0E21C8C0CC0047FEBB /* MusicPlayer.swift in Sources */,
 				CE19BC8E21C3C18A0032AFEC /* AppDelegate.swift in Sources */,
 				CE25BF0221C8A4D70047FEBB /* AudioStation.swift in Sources */,
+				CEAA72A021CCC63300A3EA01 /* Transition.swift in Sources */,
+				CEAA729A21CCAFD000A3EA01 /* MiniPlayer.swift in Sources */,
 				CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */,
 				CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */,
 				CE25BF0521C8A93C0047FEBB /* Player Setup.swift in Sources */,
+				CEAA72A221CCC8B800A3EA01 /* PullDownAnimation.swift in Sources */,
 				CECE7A7D21CB5CD8005C0DDB /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

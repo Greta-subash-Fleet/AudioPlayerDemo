@@ -57,7 +57,7 @@ class PlayerViewController: UIViewController {
     let mPlayer = MusicPlayer.shared
     var newPlayer = true
     
-    fileprivate var topPositionOfPlayerView: CGFloat = -70
+    fileprivate var topPositionOfPlayerView: CGFloat = -90
     
     fileprivate var bottomPositionOfPlayerView: CGFloat {
         
@@ -80,22 +80,37 @@ class PlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addPanGesture()
+        //self.view.backgroundColor = .clear
         
         newPlayer ? playerChanged() : musicPlayerPlayStateDidChange(mPlayer.playerState, animate: false)
+        
+        
 
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.topPositionOfPlayerView = -self.miniPlayerView.frame.height
+        self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        //self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
     }
     
     func loadStation(audioStation: FMStation?, isNew: Bool) {
         guard let audioStation = audioStation else { return }
         currentAudioStation = audioStation
         newPlayer = isNew
+        
     }
     
     func playerChanged() {
         guard let musicUrlString = currentAudioStation?.streamURL else { return }
         mPlayer.musicUrl = URL(string: musicUrlString)
+        buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
     }
     
     //MARK:- Private methods
@@ -108,45 +123,48 @@ class PlayerViewController: UIViewController {
     
     var originalPosition: CGPoint?
     @objc func handlePanGesture(_ gestureRecognizer: UIPanGestureRecognizer){
-        //var originalPosition: CGPoint?
-        let translation = gestureRecognizer.translation(in: view)
+        
+        
+        let translation = gestureRecognizer.translation( in: self.view)
+        let velocity = gestureRecognizer.velocity(in: self.view)
         let y = self.view.frame.minY
         
-        if (y + translation.y >= -70) && (y + translation.y <= 200) {
+        //translate y postion when drag within topPositionOfPlayerView to bottomPositionOfPlayerView
+        if (y + translation.y >= topPositionOfPlayerView) && (y + translation.y <= bottomPositionOfPlayerView) {
             
             self.view.frame = CGRect(x: 0, y: y + translation.y, width: self.view.frame.width, height: self.view.frame.height)
             gestureRecognizer.setTranslation(CGPoint(x:0,y:0), in: self.view)
         }
         
-        if gestureRecognizer.state == .began {
-            originalPosition = view.center
-            //currentPositionTouched = panGesture.location(in: view)
-        } else if gestureRecognizer.state == .changed {
-            view.frame.origin = CGPoint(
-                x:  view.frame.origin.x,
-                y:  view.frame.origin.y + translation.y
-            )
-            gestureRecognizer.setTranslation(CGPoint.zero, in: self.view)
-        } else if gestureRecognizer.state == .ended {
-            let velocity = gestureRecognizer.velocity(in: view)
-            if velocity.y >= 150 {
-                UIView.animate(withDuration: 0.2
-                    , animations: {
-                        self.view.frame.origin = CGPoint(
-                            x: self.view.frame.origin.x,
-                            y: self.view.frame.size.height
-                        )
-                }, completion: { (isCompleted) in
-                    if isCompleted {
-                        self.dismiss(animated: false, completion: nil)
-                    }
-                })
-            } else {
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.view.center = self.originalPosition!
-                })
+        if gestureRecognizer.state != .ended{ return}
+        
+     
+        
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: [.allowUserInteraction], animations: {
+            
+            if velocity.y < -500{
+                self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                self.view.setNeedsLayout()
+                self.view.setNeedsDisplay()
+            }else if velocity.y > 500{
+                self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                self.view.setNeedsLayout()
+                self.view.setNeedsDisplay()
+            }else{
+                
+                if y + translation.y <= ((self.view.frame.height/2) + self.topPositionOfPlayerView/2){
+                    
+                    self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.setNeedsLayout()
+                    self.view.setNeedsDisplay()
+                }else{
+                    
+                    self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                    self.view.setNeedsLayout()
+                    self.view.setNeedsDisplay()
+                }
             }
-        }
+        }, completion: nil)
         
     }
     
@@ -164,7 +182,13 @@ class PlayerViewController: UIViewController {
     }
     
     @IBAction func buttonPlayPauseTapped(_ sender: Any) {
+        
        self.delegate?.didPressPlayButton()
+        if mPlayer.isPlaying {
+            buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+        } else {
+            buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+        }
     }
     
     @IBAction func buttonNextTapped(_ sender: Any) {

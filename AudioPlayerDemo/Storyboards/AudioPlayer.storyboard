@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Ls-bw-ene">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Ls-bw-ene">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -107,7 +107,7 @@
                                 </prototypes>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="0.12549019610000001" green="0.090196078430000007" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                         <constraints>
                             <constraint firstItem="Mbk-Fv-DAq" firstAttribute="bottom" secondItem="sac-mi-Yjg" secondAttribute="bottom" id="7oj-2b-xOq"/>
                             <constraint firstItem="sac-mi-Yjg" firstAttribute="top" secondItem="Mbk-Fv-DAq" secondAttribute="top" id="FlY-UV-NWS"/>
@@ -146,24 +146,24 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="0IF-L0-cap">
                                         <rect key="frame" x="66" y="19.5" width="169" height="58"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qn6-WA-j45">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Black Dog" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qn6-WA-j45">
                                                 <rect key="frame" x="0.0" y="0.0" width="169" height="25"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="WQm-QY-aEF"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jJk-Ph-elm">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Led Zeppelin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jJk-Ph-elm">
                                                 <rect key="frame" x="0.0" y="33" width="169" height="25"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="lpK-PH-Ydt"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -186,6 +186,7 @@
                                                     <constraint firstAttribute="width" constant="30" id="YbU-IG-uNy"/>
                                                 </constraints>
                                                 <state key="normal" title="Button" image="audio_play"/>
+                                                <state key="selected" image="audio_pause"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndv-Dz-5gz">
                                                 <rect key="frame" x="94" y="0.0" width="30" height="30"/>
@@ -271,7 +272,7 @@
                                                     <constraint firstAttribute="width" constant="45" id="53w-qS-bZM"/>
                                                     <constraint firstAttribute="height" constant="45" id="9mN-AH-QhI"/>
                                                 </constraints>
-                                                <state key="normal" title="Button" image="audio_repeat"/>
+                                                <state key="normal" image="audio_repeat"/>
                                                 <connections>
                                                     <action selector="buttonRepeatTapped:" destination="HQ9-dS-i0u" eventType="touchUpInside" id="HWM-Tc-yi9"/>
                                                 </connections>
@@ -316,7 +317,7 @@
                                                     <constraint firstAttribute="height" constant="45" id="jSp-kD-AwR"/>
                                                     <constraint firstAttribute="width" constant="45" id="nVt-Eo-flq"/>
                                                 </constraints>
-                                                <state key="normal" title="Button" image="audio_shuffle"/>
+                                                <state key="normal" image="audio_shuffle"/>
                                                 <connections>
                                                     <action selector="buttonShuffleTapped:" destination="HQ9-dS-i0u" eventType="touchUpInside" id="Xu9-cX-UXJ"/>
                                                 </connections>
@@ -365,7 +366,6 @@
                             <constraint firstItem="PZC-we-tin" firstAttribute="leading" secondItem="W49-UZ-dCK" secondAttribute="leading" id="JMN-IF-HoH"/>
                             <constraint firstItem="Y1g-AA-zjy" firstAttribute="top" secondItem="IbU-FG-pOq" secondAttribute="bottom" id="KEb-gF-7Ts"/>
                             <constraint firstItem="IbU-FG-pOq" firstAttribute="top" secondItem="W49-UZ-dCK" secondAttribute="top" id="LNb-Zh-Yfj"/>
-                            <constraint firstItem="Y1g-AA-zjy" firstAttribute="height" secondItem="W49-UZ-dCK" secondAttribute="height" multiplier="0.4" id="Ma6-b6-0o5"/>
                             <constraint firstItem="PZC-we-tin" firstAttribute="height" secondItem="W49-UZ-dCK" secondAttribute="height" multiplier="0.25" id="NYY-3l-ZmB"/>
                             <constraint firstItem="Y1g-AA-zjy" firstAttribute="leading" secondItem="W49-UZ-dCK" secondAttribute="leading" id="RHr-I2-LvZ"/>
                             <constraint firstItem="PZC-we-tin" firstAttribute="trailing" secondItem="W49-UZ-dCK" secondAttribute="trailing" id="fCA-Sg-3yB"/>
