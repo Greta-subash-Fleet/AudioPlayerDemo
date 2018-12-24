@@ -31,6 +31,8 @@ class AudioItemsListViewController: UIViewController {
         }
     }
     
+    fileprivate var isShuffleOn: Bool = false
+    
     //MARK:- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -191,6 +193,7 @@ class AudioItemsListViewController: UIViewController {
     }
     
     fileprivate func showMiniPlayer(sender: IndexPath) {
+        
         let storyboard = UIStoryboard.init(name: "AudioPlayer", bundle: nil)
         playerViewController = storyboard.instantiateViewController(withIdentifier: "PlayerVC") as? PlayerViewController
         let isNew: Bool?
@@ -208,8 +211,6 @@ class AudioItemsListViewController: UIViewController {
         
     }
     
-
-
 }
 
 
@@ -226,11 +227,9 @@ extension AudioItemsListViewController: UITableViewDataSource {
         return cell
     }
     
-
-    
-    
-    
 }
+
+
 
 extension AudioItemsListViewController: UITableViewDelegate {
     
@@ -259,43 +258,95 @@ extension AudioItemsListViewController: AudioPlayerDelegate {
 
 extension AudioItemsListViewController: PlayingVCDelegate {
     
+    ///shuffle music
+    func didPressShuffleButton(_ sender : UIButton) {
+        
+        if sender.isSelected {
+            isShuffleOn = true
+        } else {
+            isShuffleOn = false
+            
+        }
+    }
+    
+    
+    func playMusicFromRandomIndex() {
+        
+        playerViewController?.buttonPrevious.isEnabled = true
+        playerViewController?.buttonNext.isEnabled = true
+        //let shuffledItems = audioItems.shuffled()
+        let randomIndex = Int(arc4random_uniform(UInt32(audioItems.count)))
+        print("Random Index: \(randomIndex)")
+        musicPlayer.audioStation = audioItems[randomIndex]
+        self.changeAudioItem()
+
+    }
+    
+    
+    ///toggle play pause
     func didPressPlayButton() {
         musicPlayer.player.togglePlaying()
     }
     
     func didPressPreviousButton() {
+
         print("Play previous")
-        //radioPlayer.station = (index + 1 == stations.count) ? stations[0] : stations[index + 1]
+        isShuffleOn ? playMusicFromRandomIndex() : playPreviousItems()
+    
+    }
+    
+    
+    ///play previous
+    func playPreviousItems() {
+        if audioItems.count > 1 {
+            playerViewController?.buttonNext.isEnabled = true
+        }
+        
         guard let audioIndex = getAudioStationsCount(of: musicPlayer.audioStation!) else { return }
         if audioIndex - 1 <= 0 {
-           playerViewController?.buttonPrevious.isEnabled = false
+            playerViewController?.buttonPrevious.isEnabled = false
+        } else {
+            musicPlayer.audioStation = audioItems[audioIndex - 1]
+            self.changeAudioItem()
+            
         }
-        
-        
     }
     
+    
+    ///play next
     func didPressNextButton() {
         print("Play next")
-        guard let audioIndex = getAudioStationsCount(of: musicPlayer.audioStation!) else { return }
-        if audioIndex + 1 >= audioItems.count {
-            self.changeAudioItem()
-        } else {
-            playerViewController?.buttonNext.isEnabled = false
-        }
-        
-        
+        isShuffleOn ? playMusicFromRandomIndex() : playNextItems()
+
     }
     
     
+    func playNextItems() {
+        if audioItems.count > 1 {
+            playerViewController?.buttonPrevious.isEnabled = true
+        }
+        guard let audioIndex = getAudioStationsCount(of: musicPlayer.audioStation!) else { return }
+        if audioIndex + 1 >= audioItems.count {
+            playerViewController?.buttonNext.isEnabled = false
+        } else {
+            
+            musicPlayer.audioStation = audioItems[audioIndex + 1]
+            self.changeAudioItem()
+            
+        }
+    }
+    
+    
+    
+    ///play the selected audio item
     func changeAudioItem() {
         if let audioPlayingVC = playerViewController {
             audioPlayingVC.loadStation(audioStation: musicPlayer.audioStation, isNew: false)
-
             
         } else if let audioStation = musicPlayer.audioStation {
             musicPlayer.player.musicUrl = URL(string: audioStation.streamURL ?? "")
+            
         }
-
     }
     
     

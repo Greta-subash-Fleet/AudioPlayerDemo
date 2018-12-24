@@ -254,7 +254,7 @@ open class MusicPlayer: NSObject {
     
     
     
-    ///reset all observersand create new ones
+    ///reset all observers and create new ones
     private func playerItemDidChange() {
         
     }

@@ -7,12 +7,14 @@
 //
 
 import UIKit
-
+import MediaPlayer
 //MARK:- Protocol
 protocol PlayingVCDelegate: class {
     func didPressPlayButton()
     func didPressPreviousButton()
     func didPressNextButton()
+    func didPressShuffleButton(_ sender: UIButton)
+   
     
 }
 
@@ -57,7 +59,7 @@ class PlayerViewController: UIViewController {
     let mPlayer = MusicPlayer.shared
     var newPlayer = true
     
-    fileprivate var topPositionOfPlayerView: CGFloat = -90
+    fileprivate var topPositionOfPlayerView: CGFloat = -100
     
     fileprivate var bottomPositionOfPlayerView: CGFloat {
         
@@ -73,6 +75,9 @@ class PlayerViewController: UIViewController {
         
         return UIScreen.main.bounds.height + self.topPositionOfPlayerView - yPosition
     }
+    
+    //MARK:- List
+    fileprivate var audioItemSuffleListArray = [Int]()
 
     
     
@@ -100,20 +105,30 @@ class PlayerViewController: UIViewController {
         //self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
     }
     
-    func loadStation(audioStation: FMStation?, isNew: Bool) {
+    func loadStation(audioStation: FMStation?, isNew: Bool = true) {
         guard let audioStation = audioStation else { return }
         currentAudioStation = audioStation
         newPlayer = isNew
+        self.playerChanged()
         
     }
     
     func playerChanged() {
         guard let musicUrlString = currentAudioStation?.streamURL else { return }
         mPlayer.musicUrl = URL(string: musicUrlString)
-        buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+        //buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
     }
     
     //MARK:- Private methods
+    ///time observer for player slider
+    fileprivate var observer: Any?
+    
+    func setUpTimeObserver() {
+        
+    
+    }
+    
+    
     
     private func addPanGesture() {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
@@ -168,6 +183,8 @@ class PlayerViewController: UIViewController {
         
     }
     
+  
+    
     
     
     
@@ -195,8 +212,13 @@ class PlayerViewController: UIViewController {
         self.delegate?.didPressNextButton()
     }
     
-    @IBAction func buttonShuffleTapped(_ sender: Any){
+    @IBAction func buttonShuffleTapped(_ sender: UIButton){
         print("Shuffle Tapped")
+        sender.isSelected = !sender.isSelected
+        _ = sender.isSelected ? "\(sender.setImage(UIImage(named: "audio_repeat"), for: UIControl.State()))" : "\(sender.setImage(UIImage(named: "audio_shuffle"), for: UIControl.State()))"
+        self.delegate?.didPressShuffleButton(sender)
+        
+        
     }
     
     @IBAction func buttonDismissPlayerTapped(_ sender: Any) {
@@ -241,7 +263,4 @@ class PlayerViewController: UIViewController {
 }
 
 
-class Interactor: UIPercentDrivenInteractiveTransition {
-    var hasStarted = false
-    var shouldFinish = false
-}
+
