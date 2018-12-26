@@ -58,34 +58,54 @@ struct DataManager {
         sessionConfig.timeoutIntervalForRequest = 15
         sessionConfig.timeoutIntervalForResource = 30
         sessionConfig.httpMaximumConnectionsPerHost = 1
-        
+
         let session = URLSession(configuration: sessionConfig)
-        
+
         // Use URLSession to get data from an NSURL
         let loadDataTask = session.dataTask(with: url) { data, response, error in
-            
+
             guard error == nil else {
                 completion(nil, error!)
                 if kDebugLog { print("API ERROR: \(error!)") }
                 return
             }
-            
+
             guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
                 completion(nil, nil)
                 if kDebugLog { print("API: HTTP status code has unexpected value") }
                 return
             }
-            
+
             guard let data = data else {
                 completion(nil, nil)
                 if kDebugLog { print("API: No data received") }
                 return
             }
-            
+
             // Success, return data
             completion(data, nil)
         }
-        
+
         loadDataTask.resume()
-    }
+   }
+        
+        
+//        let url = url
+//        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+//            guard let dataResponse = data,
+//                error == nil else {
+//                    print(error?.localizedDescription ?? "Response Error")
+//                    return }
+//            do{
+//                //here dataResponse received from a network request
+//                let jsonResponse = try JSONSerialization.jsonObject(with:
+//                    dataResponse, options: [])
+//                print(jsonResponse) //Response result
+//            } catch let parsingError {
+//                print("Error", parsingError)
+//            }
+//        }
+//        task.resume()
+//
+//    }
 }

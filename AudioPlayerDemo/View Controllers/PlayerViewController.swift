@@ -85,6 +85,7 @@ class PlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addPanGesture()
+        
         //self.view.backgroundColor = .clear
         
         newPlayer ? playerChanged() : musicPlayerPlayStateDidChange(mPlayer.playerState, animate: false)
@@ -97,12 +98,24 @@ class PlayerViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.topPositionOfPlayerView = -self.miniPlayerView.frame.height
-        self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
+        //self.topPositionOfPlayerView = -self.miniPlayerView.frame.height
+        self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height + 100)
+        print(self.view.frame)
     }
     
     override func viewDidLayoutSubviews() {
         //self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
+    }
+    
+    public func show(_ view : UIView){
+        
+        self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let window = appDelegate.window!
+        if !self.view.isDescendant(of: window) {
+            window.addSubview(self.view)
+        }
     }
     
     func loadStation(audioStation: FMStation?, isNew: Bool = true) {
@@ -110,29 +123,36 @@ class PlayerViewController: UIViewController {
         currentAudioStation = audioStation
         newPlayer = isNew
         self.playerChanged()
+        if !newPlayer {
+            self.labelEndTime.text = mPlayer.currentTime
+        }
         
     }
     
     func playerChanged() {
+        //guard let musicUrlString = currentAudioStation?.mediaUrl else { return }
         guard let musicUrlString = currentAudioStation?.streamURL else { return }
         mPlayer.musicUrl = URL(string: musicUrlString)
+
+        //self.setUpTimeObserver()
         //buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
     }
     
     //MARK:- Private methods
     ///time observer for player slider
-    fileprivate var observer: Any?
+
     
-    func setUpTimeObserver() {
+
         
+
     
-    }
+
     
-    
-    
+    ///pan gesture
     private func addPanGesture() {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         self.view.addGestureRecognizer(gesture)
+        self.presentationController?.containerView?.isUserInteractionEnabled = true
         
     }
     
@@ -159,10 +179,12 @@ class PlayerViewController: UIViewController {
             
             if velocity.y < -500{
                 self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                print(self.view.frame.height)
                 self.view.setNeedsLayout()
                 self.view.setNeedsDisplay()
             }else if velocity.y > 500{
                 self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                 print(self.view.frame.height)
                 self.view.setNeedsLayout()
                 self.view.setNeedsDisplay()
             }else{
@@ -170,11 +192,13 @@ class PlayerViewController: UIViewController {
                 if y + translation.y <= ((self.view.frame.height/2) + self.topPositionOfPlayerView/2){
                     
                     self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                     print(self.view.frame.height)
                     self.view.setNeedsLayout()
                     self.view.setNeedsDisplay()
                 }else{
                     
                     self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                     print(self.view.frame.height)
                     self.view.setNeedsLayout()
                     self.view.setNeedsDisplay()
                 }
@@ -220,6 +244,8 @@ class PlayerViewController: UIViewController {
         
         
     }
+    //observer for slider and slider timings
+    
     
     @IBAction func buttonDismissPlayerTapped(_ sender: Any) {
         print("Dismiss")
@@ -227,15 +253,122 @@ class PlayerViewController: UIViewController {
     
     
     //MARK:- IB Actions in mini-player top
+
+    @IBAction func buttonMiniPreviousTapped(_ sender: UIButton) {
+        print("Previous tapped in mini player")
+        self.delegate?.didPressPreviousButton()
+    }
     
     
-    //
+    @IBAction func buttonMiniPlayPauseTapped(_ sender: UIButton) {
+        print("Play pause tapped in mini player")
+        sender.isSelected = !sender.isSelected
+        _ = sender.isSelected ? "\(sender.setImage(UIImage(named: "audio_pause"), for: UIControl.State()))" : "\(sender.setImage(UIImage(named: "audio_play"), for: UIControl.State()))"
+        self.delegate?.didPressPlayButton()
+
+    }
+    
+    @IBAction func buttonMiniNextTapped(_ sender: UIButton) {
+        print("Next tapped in mini player")
+        self.delegate?.didPressNextButton()
+
+    }
+    
+    
+    
+    
+    
+    
+    //MARK:- Time observer for slider values
+    ///notification set up
+    private var observer: Any?
+    
+    private func setUpTimeObserverForPlayerItem() {
+        
+//        if let observer = self.observer {
+//            mPlayer.player?.removeTimeObserver(observer)
+//        }
+        observer = nil
+        
+        self.labelStartTime.text = "__:__"
+        self.labelEndTime.text = "__:__"
+        
+        self.playerSlider.minimumValue = 0
+        self.playerSlider.value = 0
+        let interval: CMTime = CMTimeMake(value: 1, timescale: 10)
+        self.observer = self.mPlayer.player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+            guard let `self` = self else { return }
+            let currentDuration: Float64 = CMTimeGetSeconds(time)
+            self.playerSlider.value = CFloat(currentDuration)
+            self.setUpSliderValues()
+            
+        }
+    }
+    
+    private func setUpSliderValues() {
+        
+        guard let currentItem = self.mPlayer.player?.currentItem else { return }
+        
+        //get time in seconds
+        let playhead = currentItem.currentTime().seconds
+        let duration = currentItem.duration.seconds
+        
+        //format time
+        if playhead.isFinite, duration.isFinite {
+            let currentTime = self.calculateTimeFromNSTimeInterval(playhead)
+            self.labelStartTime.text = "\(currentTime.minute):\(currentTime.second)"
+            
+            let totalTime = self.calculateTimeFromNSTimeInterval(duration)
+            self.labelEndTime.text = "\(totalTime.minute):\(totalTime.second)"
+            self.playerSlider.maximumValue = Float(duration)
+        } else {
+            self.playerSlider.value = 0
+            self.labelStartTime.text = "NaN:NaN"
+            self.labelEndTime.text = "NaN:NaN"
+        }
+        
+        if duration.isFinite {
+//            let totalTime = self.calculateTimeFromNSTimeInterval(duration)
+//            self.labelEndTime.text = "\(totalTime.minute):\(totalTime.second)"
+//            self.playerSlider.maximumValue = Float(duration)
+        }
+        
+    }
+    
+
+
+    
+    
+    
+    
+    //This returns song length
+    private func calculateTimeFromNSTimeInterval(_ duration:TimeInterval) ->(minute:String, second:String){
+        //         let hour_   = abs(Int(duration)/3600)
+        let minute_ = abs(Int((duration/60).truncatingRemainder(dividingBy: 60)))
+        let second_ = abs(Int(duration.truncatingRemainder(dividingBy: 60)))
+        
+        //        var hour = hour_ > 9 ? "\(hour_)" : "0\(hour_)"
+        let minute = minute_ > 9 ? "\(minute_)" : "0\(minute_)"
+        let second = second_ > 9 ? "\(second_)" : "0\(second_)"
+        return (minute,second)
+    }
+
+    
+    //MARK:- Player playback states
+    ///music playback states
     func musicPlayerPlaybackStateDidChange(_ musicPlaybackState: MusicPlaybackState, animate: Bool) {
         var message: String?
         
         switch musicPlaybackState {
         case .paused:
             message = ""
+        case .playing:
+            message = ""
+            print(message ?? "")
+            //let totalTime = mPlayer.player?.currentItem?.asset.duration.seconds
+            //print(totalTime)
+            //self.labelEndTime.text = "\(String(describing: totalTime))"
+            self.setUpTimeObserverForPlayerItem()
         default:
             message = ""
         }
@@ -248,6 +381,7 @@ class PlayerViewController: UIViewController {
             
         case .readyToPlay, .loadingFinished:
             message = ""
+            print(message ?? "")
             
         default:
             message = ""

@@ -15,6 +15,7 @@ class AudioItemsListViewController: UIViewController {
     
     //MARK: Interface Builder
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var miniPlayerView: UIView!
     
     //MARK:- properties
     let musicPlayer = AudioPlayer()
@@ -44,8 +45,16 @@ class AudioItemsListViewController: UIViewController {
         
         tableView.backgroundColor = .clear
         tableView.backgroundView = nil
+        
+        self.navigationController?.navigationBar.barTintColor = UIColor.purple
+        //self.miniPlayerView.isHidden = true
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        title = " WTVGo FM Player"
     }
     
     func getAudioItems() {
@@ -67,7 +76,7 @@ class AudioItemsListViewController: UIViewController {
             
             if kDebugLog { print("Stations JSON Found") }
             
-            guard let data = data, let jsonDictionary = try? JSONDecoder().decode([String: [FMStation]].self, from: data), let audioArray = jsonDictionary["audioItems"] else {
+            guard let data: Any = data , let jsonDictionary = try? JSONDecoder().decode([String: [FMStation]].self, from: data as! Data), let audioArray = jsonDictionary["audioItems"] else {
                 if kDebugLog { print("JSON Station Loading Error") }
                 return
             }
@@ -207,8 +216,17 @@ class AudioItemsListViewController: UIViewController {
         playerViewController?.delegate = self
         playerViewController?.modalTransitionStyle = .flipHorizontal
         playerViewController?.modalPresentationStyle = .overCurrentContext
-        self.present(playerViewController!, animated: false)
+        self.present(playerViewController!, animated: false, completion: {
+            self.playerViewController?.show(self.miniPlayerView)
+        })
         
+    }
+    
+    fileprivate func loadMiniPlayerFromNib() {
+        self.miniPlayerView.isHidden = false
+        let miniPlayerView: MiniPlayer = MiniPlayer.loadFromNib()
+        miniPlayerView.frame.size = self.miniPlayerView.frame.size
+        self.miniPlayerView.addSubview(miniPlayerView)
     }
     
 }
@@ -224,6 +242,7 @@ extension AudioItemsListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: AudioItemsTableViewCell = tableView.dequeueReusableCell(withIdentifier: "AudioItemsCell", for: indexPath) as! AudioItemsTableViewCell
         cell.labelAudioTitle.text = audioItems[indexPath.row].name
+        //cell.labelAudioTitle.text = audioItems[indexPath.row].mediaTitle
         return cell
     }
     
@@ -234,10 +253,11 @@ extension AudioItemsListViewController: UITableViewDataSource {
 extension AudioItemsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
-//        musicPlayer.player.musicUrl = audioUrl
+        guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
+        musicPlayer.player.musicUrl = audioUrl
         
         self.showMiniPlayer(sender: indexPath)
+        //self.loadMiniPlayerFromNib()
         
     }
 }
@@ -303,7 +323,7 @@ extension AudioItemsListViewController: PlayingVCDelegate {
         }
         
         guard let audioIndex = getAudioStationsCount(of: musicPlayer.audioStation!) else { return }
-        if audioIndex - 1 <= 0 {
+        if audioIndex - 1 < 0 {
             playerViewController?.buttonPrevious.isEnabled = false
         } else {
             musicPlayer.audioStation = audioItems[audioIndex - 1]
@@ -331,6 +351,7 @@ extension AudioItemsListViewController: PlayingVCDelegate {
         } else {
             
             musicPlayer.audioStation = audioItems[audioIndex + 1]
+            
             self.changeAudioItem()
             
         }
@@ -343,11 +364,17 @@ extension AudioItemsListViewController: PlayingVCDelegate {
         if let audioPlayingVC = playerViewController {
             audioPlayingVC.loadStation(audioStation: musicPlayer.audioStation, isNew: false)
             
+            
         } else if let audioStation = musicPlayer.audioStation {
             musicPlayer.player.musicUrl = URL(string: audioStation.streamURL ?? "")
+            //musicPlayer.player.musicUrl = URL(string: audioStation.mediaUrl ?? "")
             
         }
+        
+        
     }
+    
+    
     
     
 }

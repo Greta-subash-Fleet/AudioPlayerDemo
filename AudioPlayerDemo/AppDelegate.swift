@@ -19,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Media player info center
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
+        // Make status bar white
+        UINavigationBar.appearance().barStyle = .blackOpaque
+        
         return true
     }
 

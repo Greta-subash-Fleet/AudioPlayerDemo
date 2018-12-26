@@ -13,7 +13,7 @@
 
 import Foundation
 import AVFoundation
-
+import UIKit
 
 //MARK:- MusicPlaybackState
 @objc public enum MusicPlaybackState: Int {
@@ -119,7 +119,7 @@ import AVFoundation
 
 open class MusicPlayer: NSObject {
     
-    open static let shared = MusicPlayer()
+    public static let shared = MusicPlayer()
     
     open weak var delegate: MusicPlayerDelegate?
     
@@ -165,7 +165,7 @@ open class MusicPlayer: NSObject {
     }
     
     //MARK:- Private properties, for avplayer
-    private var player: AVPlayer?
+    open var player: AVPlayer?
     
     private var lastplayerItem: AVPlayerItem?
     
@@ -174,6 +174,24 @@ open class MusicPlayer: NSObject {
         didSet {
             self.playerItemDidChange()
         }
+    }
+    
+    
+    //MARK:- Init
+//    var updater: CADisplayLink! = nil
+//    var progress: UISlider!
+    private override init() {
+        super.init()
+        //self.setUpNotifications()
+//        updater = CADisplayLink(target: self, selector: #selector(MusicPlayer.updateProgressView))
+//        updater.preferredFramesPerSecond = 1
+//        updater.add(to: RunLoop.current, forMode: RunLoop.Mode.default)
+    }
+    
+    @objc func updateProgressView() {
+        print("Update slider")
+
+
     }
     
     
@@ -250,6 +268,8 @@ open class MusicPlayer: NSObject {
         }
         playerItem = AVPlayerItem(asset: asset)
         self.play()
+        //print(player?.currentItem?.asset.duration.seconds)
+        //self.setUpNotifications()
     }
     
     
@@ -301,5 +321,83 @@ open class MusicPlayer: NSObject {
         self.resetMusicPlayer()
         //remove notification observers as well
     }
+    
+    
+    ///notification set up
+    var observer: Any?
+    var musicSlider: UISlider?
+    var currentDuration: String?
+    var currentTime: String? {
+        didSet {
+            self.displayCurrentTime()
+        }
+    }
+    var totalDuration: String?
+    
+    func setUpNotifications() {
+//        if let observer = self.observer {
+//            //self.player?.removeTimeObserver(observer)
+//        }
+//        self.observerToken = mediaManager.player!.addPeriodicTimeObserver(forInterval: interval, queue: .main, using: { (time) in
+//            // Update slider value to audio item progress.
+//            let duration = self.mediaManager.player!.currentItem!.duration.seconds
+//            let seekTime = self.mediaManager.player!.currentTime().seconds
+//            self.doubleValue = seekTime / duration * 100
+        self.observer = nil
+        let intervel : CMTime = CMTimeMake(value: 1, timescale: 10)
+        self.observer = self.player?.addPeriodicTimeObserver(forInterval: intervel, queue: DispatchQueue.main) { (time) in
+            //guard let `self` = self else { return }
+            let currentDuration : Float64 = CMTimeGetSeconds(time)
+            self.musicSlider?.value = CFloat(currentDuration)
+            self.setUpSliderValues()
+        }
+    }
+    
+    func setUpSliderValues() {
+        
+        guard let currentItem = self.player?.currentItem else{
+            return
+        }
+        
+        // Get the current time in seconds
+        let playhead = currentItem.currentTime().seconds
+        let duration = currentItem.duration.seconds
+        // Format seconds for human readable string
+        
+        if playhead.isFinite{
+            let time = self.calculateTimeFromNSTimeInterval(playhead)
+            currentDuration = "\(time.minute):\(time.second)"
+            print("Current Duration: \(String(describing: currentDuration))")
+            displayCurrentTime()
+        }
+        
+        if duration.isFinite{
+            
+            let time = self.calculateTimeFromNSTimeInterval(duration)
+            totalDuration = "\(time.minute):\(time.second)"
+            print("Total Duration: \(String(describing: totalDuration))")
+            self.musicSlider?.maximumValue = Float(duration)
+        }
+    }
+    
+    func displayCurrentTime() {
+        //currentTime = currentDuration ?? ""
+    }
+    
+  
+    
+    
+    //This returns song length
+    fileprivate func calculateTimeFromNSTimeInterval(_ duration:TimeInterval) ->(minute:String, second:String){
+        //         let hour_   = abs(Int(duration)/3600)
+        let minute_ = abs(Int((duration/60).truncatingRemainder(dividingBy: 60)))
+        let second_ = abs(Int(duration.truncatingRemainder(dividingBy: 60)))
+        
+        //        var hour = hour_ > 9 ? "\(hour_)" : "0\(hour_)"
+        let minute = minute_ > 9 ? "\(minute_)" : "0\(minute_)"
+        let second = second_ > 9 ? "\(second_)" : "0\(second_)"
+        return (minute,second)
+    }
+
     
 }
