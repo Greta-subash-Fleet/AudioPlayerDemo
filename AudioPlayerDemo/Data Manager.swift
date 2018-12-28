@@ -76,19 +76,21 @@ struct DataManager {
                 return
             }
 
-            guard let data = data else {
+            guard let data =  try? JSONDecoder().decode(FMStation.self, from: data!) else {
                 completion(nil, nil)
                 if kDebugLog { print("API: No data received") }
                 return
             }
 
+
             // Success, return data
-            completion(data, nil)
+            print(data)
+            completion(nil, nil)
         }
 
         loadDataTask.resume()
    }
-        
+  
         
 //        let url = url
 //        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -100,12 +102,18 @@ struct DataManager {
 //                //here dataResponse received from a network request
 //                let jsonResponse = try JSONSerialization.jsonObject(with:
 //                    dataResponse, options: [])
-//                print(jsonResponse) //Response result
+//                let dataResponse = try JSONSerialization.data(withJSONObject: jsonResponse, options: JSONSerialization.WritingOptions.prettyPrinted) as! Data
+//                //print(jsonResponse) //Response result
+//                print(dataResponse)
+//                completion(dataResponse, nil)
 //            } catch let parsingError {
 //                print("Error", parsingError)
 //            }
 //        }
 //        task.resume()
-//
-//    }
+
+    }
+    
+    
+    
 }

@@ -20,7 +20,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sac-mi-Yjg">
                                 <rect key="frame" x="0.0" y="64" width="375" height="503"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AudioItemsCell" rowHeight="105" id="r1E-xy-rkW" customClass="AudioItemsTableViewCell" customModule="AudioPlayerDemo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="105"/>
@@ -108,13 +108,13 @@
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OMf-31-07l">
                                 <rect key="frame" x="0.0" y="567" width="375" height="100"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="AM1-GZ-su6"/>
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                        <color key="backgroundColor" red="0.12549019610000001" green="0.090196078430000007" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="sac-mi-Yjg" firstAttribute="top" secondItem="Mbk-Fv-DAq" secondAttribute="top" id="FlY-UV-NWS"/>
                             <constraint firstItem="OMf-31-07l" firstAttribute="trailing" secondItem="Mbk-Fv-DAq" secondAttribute="trailing" id="G9l-bw-ycF"/>
@@ -200,7 +200,6 @@
                                                     <constraint firstAttribute="width" constant="30" id="YbU-IG-uNy"/>
                                                 </constraints>
                                                 <state key="normal" title="Button" image="audio_play"/>
-                                                <state key="selected" image="audio_pause"/>
                                                 <connections>
                                                     <action selector="buttonMiniPlayPauseTapped:" destination="HQ9-dS-i0u" eventType="touchUpInside" id="YF7-Gk-9Iu"/>
                                                 </connections>
@@ -218,10 +217,23 @@
                                             </button>
                                         </subviews>
                                     </stackView>
+                                    <button opaque="NO" alpha="0.25" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="esO-cO-8RS">
+                                        <rect key="frame" x="8" y="4" width="15" height="15"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="15" id="EfO-FD-Sga"/>
+                                            <constraint firstAttribute="width" constant="15" id="cd9-3a-as6"/>
+                                        </constraints>
+                                        <state key="normal" image="top_arrow"/>
+                                        <connections>
+                                            <action selector="buttonShowMiniPlayerTapped:" destination="HQ9-dS-i0u" eventType="touchUpInside" id="Mkq-LZ-iyP"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="mhx-qa-IGH" firstAttribute="leading" secondItem="IbU-FG-pOq" secondAttribute="leading" constant="8" id="9sx-uF-0hR"/>
+                                    <constraint firstItem="esO-cO-8RS" firstAttribute="leading" secondItem="IbU-FG-pOq" secondAttribute="leading" constant="8" id="KPa-pU-h0m"/>
+                                    <constraint firstItem="esO-cO-8RS" firstAttribute="top" secondItem="IbU-FG-pOq" secondAttribute="top" constant="4" id="Luk-tg-Yz9"/>
                                     <constraint firstItem="pv2-CL-exe" firstAttribute="leading" secondItem="0IF-L0-cap" secondAttribute="trailing" constant="8" id="Mhk-Mm-psT"/>
                                     <constraint firstAttribute="trailing" secondItem="pv2-CL-exe" secondAttribute="trailing" constant="8" id="StB-wT-474"/>
                                     <constraint firstItem="0IF-L0-cap" firstAttribute="leading" secondItem="mhx-qa-IGH" secondAttribute="trailing" constant="8" id="T1O-df-Ksi"/>
@@ -234,25 +246,30 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y1g-AA-zjy" userLabel="Album Art View">
                                 <rect key="frame" x="0.0" y="120" width="375" height="259"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lnk-wq-lva">
-                                        <rect key="frame" x="342" y="20" width="25" height="25"/>
+                                    <button opaque="NO" alpha="0.25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lnk-wq-lva">
+                                        <rect key="frame" x="342" y="30" width="25" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="6Ri-tG-iqj"/>
                                             <constraint firstAttribute="width" constant="25" id="fmK-Cl-zov"/>
                                         </constraints>
-                                        <state key="normal" title="Button" image="audio_next"/>
+                                        <state key="normal" title="Button" image="down_arrow"/>
                                         <connections>
                                             <action selector="buttonDismissPlayerTapped:" destination="HQ9-dS-i0u" eventType="touchUpInside" id="wSA-dg-LgZ"/>
                                         </connections>
                                     </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LedZep" translatesAutoresizingMaskIntoConstraints="NO" id="ftr-RF-xCd">
-                                        <rect key="frame" x="101" y="46" width="172" height="149"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LedZep" translatesAutoresizingMaskIntoConstraints="NO" id="ftr-RF-xCd">
+                                        <rect key="frame" x="135.5" y="77.5" width="104" height="104"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ftr-RF-xCd" secondAttribute="height" multiplier="1:1" id="xGR-4L-z2o"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="Lnk-wq-lva" firstAttribute="top" secondItem="Y1g-AA-zjy" secondAttribute="top" constant="20" id="4Aa-79-xno"/>
+                                    <constraint firstItem="ftr-RF-xCd" firstAttribute="centerX" secondItem="Y1g-AA-zjy" secondAttribute="centerX" id="3wY-zd-avc"/>
+                                    <constraint firstItem="Lnk-wq-lva" firstAttribute="top" secondItem="Y1g-AA-zjy" secondAttribute="top" constant="30" id="4Aa-79-xno"/>
+                                    <constraint firstItem="ftr-RF-xCd" firstAttribute="height" secondItem="Y1g-AA-zjy" secondAttribute="height" multiplier="0.4" id="G0w-P1-MHt"/>
+                                    <constraint firstItem="ftr-RF-xCd" firstAttribute="centerY" secondItem="Y1g-AA-zjy" secondAttribute="centerY" id="Nsx-98-x2n"/>
                                     <constraint firstItem="Lnk-wq-lva" firstAttribute="trailing" secondItem="Y1g-AA-zjy" secondAttribute="trailingMargin" id="tGg-Br-zwT"/>
                                 </constraints>
                             </view>
@@ -260,7 +277,7 @@
                                 <rect key="frame" x="0.0" y="527" width="375" height="140"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Fqq-gd-e5h">
-                                        <rect key="frame" x="4" y="8" width="367" height="30"/>
+                                        <rect key="frame" x="8" y="8" width="359" height="30"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_ _ : _ _" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4qN-BT-ajC">
                                                 <rect key="frame" x="0.0" y="0.0" width="36" height="30"/>
@@ -269,10 +286,10 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="HRh-3c-Tlu">
-                                                <rect key="frame" x="44" y="0.0" width="279" height="31"/>
+                                                <rect key="frame" x="44" y="0.0" width="271" height="31"/>
                                             </slider>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="_ _ : _ _" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vom-Jx-OhT">
-                                                <rect key="frame" x="331" y="0.0" width="36" height="30"/>
+                                                <rect key="frame" x="323" y="0.0" width="36" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -312,9 +329,8 @@
                                                     <constraint firstAttribute="height" constant="45" id="og3-0K-Wos"/>
                                                 </constraints>
                                                 <state key="normal" title="Button" image="audio_play"/>
-                                                <state key="selected" image="audio_pause"/>
                                                 <connections>
-                                                    <action selector="buttonPlayPauseTapped:" destination="HQ9-dS-i0u" eventType="touchUpInside" id="IgP-4z-GUM"/>
+                                                    <action selector="buttonPlayPauseTapped:" destination="HQ9-dS-i0u" eventType="touchUpInside" id="GjW-L4-9mO"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAL-bH-ewb">
@@ -345,9 +361,9 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Fqq-gd-e5h" secondAttribute="trailing" constant="8" id="9LX-S7-P5y"/>
                                     <constraint firstItem="Fqq-gd-e5h" firstAttribute="top" secondItem="PZC-we-tin" secondAttribute="top" constant="8" id="BtK-z4-gyk"/>
-                                    <constraint firstItem="Fqq-gd-e5h" firstAttribute="leading" secondItem="PZC-we-tin" secondAttribute="leading" constant="4" id="Moh-BR-1hd"/>
-                                    <constraint firstAttribute="trailing" secondItem="Fqq-gd-e5h" secondAttribute="trailing" constant="4" id="kZm-tJ-RCq"/>
+                                    <constraint firstItem="Fqq-gd-e5h" firstAttribute="leading" secondItem="PZC-we-tin" secondAttribute="leading" constant="8" id="NJJ-S9-EnQ"/>
                                     <constraint firstAttribute="trailing" secondItem="nzi-lV-aLK" secondAttribute="trailing" constant="4" id="vdV-2z-pFT"/>
                                     <constraint firstAttribute="height" constant="140" id="wfD-JO-4zU"/>
                                     <constraint firstItem="nzi-lV-aLK" firstAttribute="leading" secondItem="PZC-we-tin" secondAttribute="leading" constant="4" id="xFf-n9-C8w"/>
@@ -405,6 +421,7 @@
                             <constraint firstItem="PZC-we-tin" firstAttribute="top" secondItem="8SL-KZ-qej" secondAttribute="bottom" id="kwe-Ff-SPo"/>
                             <constraint firstAttribute="bottom" secondItem="PZC-we-tin" secondAttribute="bottom" id="lkD-ey-9iX"/>
                             <constraint firstItem="Y1g-AA-zjy" firstAttribute="leading" secondItem="IbU-FG-pOq" secondAttribute="leading" id="mgE-Tm-BiH"/>
+                            <constraint firstItem="IbU-FG-pOq" firstAttribute="top" secondItem="W49-UZ-dCK" secondAttribute="top" id="yuW-wv-gic"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="W49-UZ-dCK"/>
                     </view>
@@ -420,6 +437,7 @@
                         <outlet property="buttonPlayPause" destination="pg3-XF-kcl" id="bCH-fG-lPW"/>
                         <outlet property="buttonPrevious" destination="JOj-FX-Gn7" id="9O0-eR-xBe"/>
                         <outlet property="buttonRepeat" destination="TIo-qN-GfK" id="DtL-WI-U1I"/>
+                        <outlet property="buttonShowMiniPlayer" destination="esO-cO-8RS" id="HcO-wx-2f0"/>
                         <outlet property="buttonShuffle" destination="WWN-dk-NhV" id="kMW-No-OLE"/>
                         <outlet property="imageAlbumArt" destination="ftr-RF-xCd" id="k8R-am-smo"/>
                         <outlet property="imageMiniAlbumArt" destination="mhx-qa-IGH" id="tK6-VO-QGx"/>
@@ -436,7 +454,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xwg-FF-4Dg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="888.79999999999995" y="-231.63418290854574"/>
+            <point key="canvasLocation" x="996" y="-167.76611694152925"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="dWG-og-TQb">
@@ -475,10 +493,11 @@
     <resources>
         <image name="LedZep" width="256" height="256"/>
         <image name="audio_next" width="512" height="512"/>
-        <image name="audio_pause" width="409.60000610351562" height="409.60000610351562"/>
         <image name="audio_play" width="409.60000610351562" height="409.60000610351562"/>
         <image name="audio_previous" width="512" height="512"/>
         <image name="audio_repeat" width="45" height="45"/>
         <image name="audio_shuffle" width="45" height="45"/>
+        <image name="down_arrow" width="50" height="50"/>
+        <image name="top_arrow" width="50" height="50"/>
     </resources>
 </document>

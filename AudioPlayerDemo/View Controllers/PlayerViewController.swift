@@ -29,6 +29,7 @@ class PlayerViewController: UIViewController {
     @IBOutlet weak var buttonMiniPrevious: UIButton!
     @IBOutlet weak var buttonMiniPlayPause: UIButton!
     @IBOutlet weak var buttonMiniNext: UIButton!
+    @IBOutlet weak var buttonShowMiniPlayer: UIButton!
     
     ///main player
     @IBOutlet weak var albumArtView: UIView!
@@ -100,13 +101,16 @@ class PlayerViewController: UIViewController {
         super.viewWillAppear(animated)
         //self.topPositionOfPlayerView = -self.miniPlayerView.frame.height
         self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height + 100)
+        //self.navigationController?.navigationBar.isHidden = true
         print(self.view.frame)
+  
     }
     
     override func viewDidLayoutSubviews() {
         //self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
     }
     
+    //MARK:-
     public func show(_ view : UIView){
         
         self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
@@ -118,20 +122,22 @@ class PlayerViewController: UIViewController {
         }
     }
     
+    
+    //MARK:-
     func loadStation(audioStation: FMStation?, isNew: Bool = true) {
         guard let audioStation = audioStation else { return }
         currentAudioStation = audioStation
         newPlayer = isNew
         self.playerChanged()
         if !newPlayer {
-            self.labelEndTime.text = mPlayer.currentTime
+            //self.labelEndTime.text = mPlayer.player?.currentItem?.currentTime()
         }
         
     }
     
     func playerChanged() {
-        //guard let musicUrlString = currentAudioStation?.mediaUrl else { return }
-        guard let musicUrlString = currentAudioStation?.streamURL else { return }
+        guard let musicUrlString = currentAudioStation?.mediaUrl else { return }
+        //guard let musicUrlString = currentAudioStation?.streamURL else { return }
         mPlayer.musicUrl = URL(string: musicUrlString)
 
         //self.setUpTimeObserver()
@@ -139,20 +145,11 @@ class PlayerViewController: UIViewController {
     }
     
     //MARK:- Private methods
-    ///time observer for player slider
-
-    
-
-        
-
-    
-
-    
     ///pan gesture
     private func addPanGesture() {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         self.view.addGestureRecognizer(gesture)
-        self.presentationController?.containerView?.isUserInteractionEnabled = true
+
         
     }
     
@@ -180,11 +177,16 @@ class PlayerViewController: UIViewController {
             if velocity.y < -500{
                 self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
                 print(self.view.frame.height)
+                //self.navigationController?.navigationBar.isHidden = true
+                self.navigationController?.setNavigationBarHidden(true, animated: false)
                 self.view.setNeedsLayout()
                 self.view.setNeedsDisplay()
             }else if velocity.y > 500{
                 self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
                  print(self.view.frame.height)
+                //self.navigationController?.navigationBar.isHidden = false
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
+
                 self.view.setNeedsLayout()
                 self.view.setNeedsDisplay()
             }else{
@@ -193,11 +195,15 @@ class PlayerViewController: UIViewController {
                     
                     self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
                      print(self.view.frame.height)
+                    //self.navigationController?.navigationBar.isHidden = true
+                    self.navigationController?.setNavigationBarHidden(true, animated: false)
                     self.view.setNeedsLayout()
                     self.view.setNeedsDisplay()
                 }else{
                     
                     self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+                    //self.navigationController?.navigationBar.isHidden = false
+                    self.navigationController?.setNavigationBarHidden(false, animated: true)
                      print(self.view.frame.height)
                     self.view.setNeedsLayout()
                     self.view.setNeedsDisplay()
@@ -216,19 +222,29 @@ class PlayerViewController: UIViewController {
     //MARK:- IB Actions Main Player
     @IBAction func buttonRepeatTapped(_ sender: Any) {
         print("Repeat Tapped")
+        self.mPlayer.isReplayOn = !self.mPlayer.isReplayOn
+        print("Replay: \(mPlayer.isReplayOn)")
+        
     }
     
     @IBAction func buttonPreviousTapped(_ sender: Any) {
         self.delegate?.didPressPreviousButton()
     }
     
-    @IBAction func buttonPlayPauseTapped(_ sender: Any) {
+    @IBAction func buttonPlayPauseTapped(_ sender: UIButton) {
         
        self.delegate?.didPressPlayButton()
+        
+        //_ = sender.isSelected ? "\(sender.setImage(UIImage(named: "audio_pause"), for: UIControl.State()))" : "\(sender.setImage(UIImage(named: "audio_play"), for: UIControl.State()))"
+        sender.isSelected = !sender.isSelected
+        //self.delegate?.didPressShuffleButton(sender)
         if mPlayer.isPlaying {
             buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            buttonMiniPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            
         } else {
             buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
         }
     }
     
@@ -244,16 +260,36 @@ class PlayerViewController: UIViewController {
         
         
     }
-    //observer for slider and slider timings
+   
     
     
     @IBAction func buttonDismissPlayerTapped(_ sender: Any) {
         print("Dismiss")
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.07, options: [.transitionCurlDown], animations: {[weak self]  in
+            guard let self = self else { return }
+            
+            self.view.frame = CGRect(x: 0, y: self.bottomPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+            print(self.view.frame.height)
+            
+            }, completion: nil)
     }
     
     
     //MARK:- IB Actions in mini-player top
-
+    
+    
+    @IBAction func buttonShowMiniPlayerTapped(_ sender: UIButton) {
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.07, options: [.transitionCurlUp], animations: {[weak self]  in
+            guard let self = self else { return }
+            
+            self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height)
+            print(self.view.frame.height)
+            
+            }, completion: nil)
+    }
+    
     @IBAction func buttonMiniPreviousTapped(_ sender: UIButton) {
         print("Previous tapped in mini player")
         self.delegate?.didPressPreviousButton()
@@ -262,9 +298,20 @@ class PlayerViewController: UIViewController {
     
     @IBAction func buttonMiniPlayPauseTapped(_ sender: UIButton) {
         print("Play pause tapped in mini player")
-        sender.isSelected = !sender.isSelected
-        _ = sender.isSelected ? "\(sender.setImage(UIImage(named: "audio_pause"), for: UIControl.State()))" : "\(sender.setImage(UIImage(named: "audio_play"), for: UIControl.State()))"
         self.delegate?.didPressPlayButton()
+        
+       // _ = sender.isSelected ? "\(sender.setImage(UIImage(named: "audio_play"), for: UIControl.State()))" : "\(sender.setImage(UIImage(named: "audio_pause"), for: UIControl.State()))"
+        sender.isSelected = !sender.isSelected
+        if mPlayer.isPlaying {
+            buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            buttonMiniPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            
+        } else {
+            buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+        }
+
+
 
     }
     
@@ -362,6 +409,12 @@ class PlayerViewController: UIViewController {
         switch musicPlaybackState {
         case .paused:
             message = ""
+            if (buttonPlayPause != nil) {
+                buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            }
+            if (buttonMiniPlayPause != nil) {
+                buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            }
         case .playing:
             message = ""
             print(message ?? "")
@@ -369,6 +422,14 @@ class PlayerViewController: UIViewController {
             //print(totalTime)
             //self.labelEndTime.text = "\(String(describing: totalTime))"
             self.setUpTimeObserverForPlayerItem()
+            if (buttonPlayPause != nil) {
+                buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            }
+            if (buttonMiniPlayPause != nil) {
+                buttonMiniPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            }
+            
+        
         default:
             message = ""
         }
@@ -383,11 +444,24 @@ class PlayerViewController: UIViewController {
             message = ""
             print(message ?? "")
             
+        case .error:
+            if (buttonPlayPause != nil) {
+                buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            }
+            
+            if (buttonMiniPlayPause != nil) {
+                buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            }
+            
+            print("Error")
+            
         default:
             message = ""
         }
         musicPlayerPlaybackStateDidChange(mPlayer.musicPlaybackState, animate: animate)
     }
+    
+    
     
     func isAudioPlayingChanged(_ isPlaying: Bool) {
         buttonPlayPause.isSelected = isPlaying

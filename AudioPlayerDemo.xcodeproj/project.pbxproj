@@ -23,6 +23,8 @@
 		CE25BF1021C90C440047FEBB /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */; };
 		CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */; };
 		CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */; };
+		CE8F232B21D5E8CE004B2CD5 /* AnimationFrames.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8F232A21D5E8CE004B2CD5 /* AnimationFrames.swift */; };
+		CE8F232E21D5EF5A004B2CD5 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8F232D21D5EF59004B2CD5 /* Reachability.swift */; };
 		CEAA729821CCADA600A3EA01 /* MiniPlayer.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEAA729721CCADA600A3EA01 /* MiniPlayer.xib */; };
 		CEAA729A21CCAFD000A3EA01 /* MiniPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA729921CCAFD000A3EA01 /* MiniPlayer.swift */; };
 		CEAA72A021CCC63300A3EA01 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAA729F21CCC63300A3EA01 /* Transition.swift */; };
@@ -70,6 +72,8 @@
 		CE25BF0F21C90C440047FEBB /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		CE2732E721C75A8B0043F41C /* AudioItemsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsListViewController.swift; sourceTree = "<group>"; };
 		CE2732EC21C75C880043F41C /* AudioItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioItemsTableViewCell.swift; sourceTree = "<group>"; };
+		CE8F232A21D5E8CE004B2CD5 /* AnimationFrames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationFrames.swift; sourceTree = "<group>"; };
+		CE8F232D21D5EF59004B2CD5 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		CEAA729721CCADA600A3EA01 /* MiniPlayer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MiniPlayer.xib; sourceTree = "<group>"; };
 		CEAA729921CCAFD000A3EA01 /* MiniPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayer.swift; sourceTree = "<group>"; };
 		CEAA729F21CCC63300A3EA01 /* Transition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
@@ -192,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				CE25BF0C21C8C0240047FEBB /* MusicPlayer */,
+				CE8F232C21D5EF3F004B2CD5 /* Reachability */,
 				CEAA729E21CCC58100A3EA01 /* Animations */,
 			);
 			path = Library;
@@ -230,11 +235,20 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
+		CE8F232C21D5EF3F004B2CD5 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				CE8F232D21D5EF59004B2CD5 /* Reachability.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		CEAA729E21CCC58100A3EA01 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
 				CEAA729F21CCC63300A3EA01 /* Transition.swift */,
 				CEAA72A121CCC8B800A3EA01 /* PullDownAnimation.swift */,
+				CE8F232A21D5E8CE004B2CD5 /* AnimationFrames.swift */,
 			);
 			path = Animations;
 			sourceTree = "<group>";
@@ -380,11 +394,13 @@
 			files = (
 				CE25BF0721C8AB990047FEBB /* Data Manager.swift in Sources */,
 				CE19BC9021C3C18A0032AFEC /* ViewController.swift in Sources */,
+				CE8F232B21D5E8CE004B2CD5 /* AnimationFrames.swift in Sources */,
 				CE25BF1021C90C440047FEBB /* AudioPlayer.swift in Sources */,
 				CE25BF0E21C8C0CC0047FEBB /* MusicPlayer.swift in Sources */,
 				CE19BC8E21C3C18A0032AFEC /* AppDelegate.swift in Sources */,
 				CE25BF0221C8A4D70047FEBB /* AudioStation.swift in Sources */,
 				CEAA72A021CCC63300A3EA01 /* Transition.swift in Sources */,
+				CE8F232E21D5EF5A004B2CD5 /* Reachability.swift in Sources */,
 				CEAA729A21CCAFD000A3EA01 /* MiniPlayer.swift in Sources */,
 				CE2732E821C75A8B0043F41C /* AudioItemsListViewController.swift in Sources */,
 				CE2732ED21C75C880043F41C /* AudioItemsTableViewCell.swift in Sources */,
