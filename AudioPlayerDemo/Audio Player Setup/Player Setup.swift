@@ -16,7 +16,7 @@ let kDebugLog = true
 // If this is set to "true", it will use the JSON file in the app
 // Set it to "false" to use the JSON file at the stationDataURL
 
-let useLocalStations = true
+let useLocalStations = false
 let stationDataURL   =  "https://mnmdev.nettvnepal.com.np/api/v2/fm/list" //"http://yoururl.com/json/stations.json"
 
 let isFMPlayer = true

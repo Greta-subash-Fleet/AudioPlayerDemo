@@ -108,4 +108,37 @@ struct DataManager {
 //        task.resume()
 //
 //    }
+    
+    
+//    static func loadDataFromCustomApi() {
+//        var fmdata: [FMStation]
+//        guard let url = URL(string: stationDataURL) else { return }
+//
+//        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+//            guard let dataResponse = data,
+//                error == nil else {
+//                    print(error?.localizedDescription ?? "Response Error")
+//                    return }
+//
+//            let jr = try? JSONDecoder().decode([String: [FMStation]].self, from: data!)
+//            print(jr)
+//            let audioArray = jr?["data"]
+//            print(audioArray)
+//            do{
+//                //here dataResponse received from a network request
+//                let jsonResponse = try JSONSerialization.jsonObject(with:
+//                dataResponse, options: []) as? [FMStation]
+//                print(jsonResponse) //Response result
+//                //let jsonDictionary = try? JSONDecoder().decode([String: [FMStation]].self, from: data as! Data), let audioArray = jsonDictionary["audioItems"
+//
+//            } catch let parsingError {
+//                print("Error", parsingError)
+//            }
+//
+//        }
+//        task.resume()
+//    }
 }
+
+
+

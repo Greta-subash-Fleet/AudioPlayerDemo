@@ -8,45 +8,45 @@
 
 import Foundation
 
-struct FMStation: Codable {
-
-    var name: String?
-    var streamURL: String?
-
-    init(name: String, streamURL: String) {
-        self.name = name
-        self.streamURL = streamURL
-
-    }
-
-}
-
-extension FMStation: Equatable {
-
-    static func ==(lhs: FMStation, rhs: FMStation) -> Bool {
-        return (lhs.name == rhs.name) && (lhs.streamURL == rhs.streamURL)
-    }
-}
-
-
 //struct FMStation: Codable {
 //
-//    var mediaId: String?
-//    var mediaTitle: String?
-//    var mediaUrl: String?
-//    var mediaArt: String?
+//    var name: String?
+//    var streamURL: String?
 //
-//    init(mediaId: String, mediaTitle: String, mediaUrl: String, mediaArt: String) {
-//        self.mediaId = mediaId
-//        self.mediaTitle = mediaTitle
-//        self.mediaUrl = mediaUrl
-//        self.mediaArt = mediaArt
+//    init(name: String, streamURL: String) {
+//        self.name = name
+//        self.streamURL = streamURL
+//
 //    }
 //
 //}
 //
 //extension FMStation: Equatable {
+//
 //    static func ==(lhs: FMStation, rhs: FMStation) -> Bool {
-//        return (lhs.mediaId == rhs.mediaId) && (lhs.mediaTitle == rhs.mediaTitle) && (lhs.mediaUrl == rhs.mediaUrl) && (lhs.mediaArt == rhs.mediaArt)
+//        return (lhs.name == rhs.name) && (lhs.streamURL == rhs.streamURL)
 //    }
 //}
+
+
+struct FMStation: Codable {
+
+    var mediaId: Int?
+    var mediaTitle: String?
+    var mediaUrl: String?
+    var mediaArt: String?
+
+    init(mediaId: Int, mediaTitle: String, mediaUrl: String, mediaArt: String) {
+        self.mediaId = mediaId
+        self.mediaTitle = mediaTitle
+        self.mediaUrl = mediaUrl
+        self.mediaArt = mediaArt
+    }
+
+}
+
+extension FMStation: Equatable {
+    static func ==(lhs: FMStation, rhs: FMStation) -> Bool {
+        return (lhs.mediaId == rhs.mediaId) && (lhs.mediaTitle == rhs.mediaTitle) && (lhs.mediaUrl == rhs.mediaUrl) && (lhs.mediaArt == rhs.mediaArt)
+    }
+}

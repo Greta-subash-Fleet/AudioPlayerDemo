@@ -146,8 +146,8 @@ class PlayerViewController: UIViewController {
     }
     
     func playerChanged() {
-        //guard let musicUrlString = currentAudioStation?.mediaUrl else { return }
-        guard let musicUrlString = currentAudioStation?.streamURL else { return }
+        guard let musicUrlString = currentAudioStation?.mediaUrl else { return }
+        //guard let musicUrlString = currentAudioStation?.streamURL else { return }
         mPlayer.musicUrl = URL(string: musicUrlString)
         
         

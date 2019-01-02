@@ -53,6 +53,7 @@ class AudioItemsListViewController: UIViewController {
         self.tableView.separatorColor = .clear
         self.automaticallyAdjustsScrollViewInsets = false
         self.navigationController?.navigationBar.barTintColor = UIColor.purple
+        //DataManager.loadDataFromCustomApi()
         //self.miniPlayerView.isHidden = true
         
 
@@ -83,7 +84,7 @@ class AudioItemsListViewController: UIViewController {
             
             if kDebugLog { print("Stations JSON Found") }
             
-            guard let data: Any = data , let jsonDictionary = try? JSONDecoder().decode([String: [FMStation]].self, from: data as! Data), let audioArray = jsonDictionary["audioItems"] else {
+            guard let data: Any = data , let jsonDictionary = try? JSONDecoder().decode([String: [FMStation]].self, from: data as! Data), let audioArray = jsonDictionary["data"] else {
                 if kDebugLog { print("JSON Station Loading Error") }
                 return
             }
@@ -293,8 +294,8 @@ extension AudioItemsListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: AudioItemsTableViewCell = tableView.dequeueReusableCell(withIdentifier: "AudioItemsCell", for: indexPath) as! AudioItemsTableViewCell
-        cell.labelAudioTitle.text = audioItems[indexPath.row].name
-        //cell.labelAudioTitle.text = audioItems[indexPath.row].mediaTitle
+        //cell.labelAudioTitle.text = audioItems[indexPath.row].name
+        cell.labelAudioTitle.text = audioItems[indexPath.row].mediaTitle
         return cell
     }
     
@@ -305,7 +306,10 @@ extension AudioItemsListViewController: UITableViewDataSource {
 extension AudioItemsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
+        guard let audioUrl = URL(string: audioItems[indexPath.row].mediaUrl!) else {
+            return
+        }
+        //guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
         musicPlayer.player.musicUrl = audioUrl
         
         self.showMiniPlayer(sender: indexPath)
@@ -420,8 +424,8 @@ extension AudioItemsListViewController: PlayingVCDelegate {
             
             
         } else if let audioStation = musicPlayer.audioStation {
-            musicPlayer.player.musicUrl = URL(string: audioStation.streamURL ?? "")
-            //musicPlayer.player.musicUrl = URL(string: audioStation.mediaUrl ?? "")
+            //musicPlayer.player.musicUrl = URL(string: audioStation.streamURL ?? "")
+            musicPlayer.player.musicUrl = URL(string: audioStation.mediaUrl ?? "")
             
         }
         
