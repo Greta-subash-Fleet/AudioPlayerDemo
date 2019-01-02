@@ -169,6 +169,9 @@ open class MusicPlayer: NSObject {
     
     private var lastplayerItem: AVPlayerItem?
     
+    // Check for headphones, used to handle audio route change
+    private var headphonesConnected: Bool = false
+    
     //default player item
     private var playerItem: AVPlayerItem? {
         didSet {
@@ -176,13 +179,19 @@ open class MusicPlayer: NSObject {
         }
     }
     
+    ///reachability to handle network interruption
+    private let reachability = Reachability()!
+    
+    ///current network state
+    private var isConnected: Bool = false
+    
     
     //MARK:- Init
 //    var updater: CADisplayLink! = nil
 //    var progress: UISlider!
     private override init() {
         super.init()
-        //self.setUpNotifications()
+        self.setUpNotifications()
 //        updater = CADisplayLink(target: self, selector: #selector(MusicPlayer.updateProgressView))
 //        updater.preferredFramesPerSecond = 1
 //        updater.add(to: RunLoop.current, forMode: RunLoop.Mode.default)
@@ -308,6 +317,12 @@ open class MusicPlayer: NSObject {
         
     }
     
+    ///reload current item
+    private func reloadMusicPlayer() {
+        player?.replaceCurrentItem(with: nil)
+        player?.replaceCurrentItem(with: playerItem)
+    }
+    
     ///set player item nil
     private func resetMusicPlayer() {
         self.stop()
@@ -335,23 +350,117 @@ open class MusicPlayer: NSObject {
     var totalDuration: String?
     
     func setUpNotifications() {
-//        if let observer = self.observer {
-//            //self.player?.removeTimeObserver(observer)
-//        }
-//        self.observerToken = mediaManager.player!.addPeriodicTimeObserver(forInterval: interval, queue: .main, using: { (time) in
-//            // Update slider value to audio item progress.
-//            let duration = self.mediaManager.player!.currentItem!.duration.seconds
-//            let seekTime = self.mediaManager.player!.currentTime().seconds
-//            self.doubleValue = seekTime / duration * 100
-        self.observer = nil
-        let intervel : CMTime = CMTimeMake(value: 1, timescale: 10)
-        self.observer = self.player?.addPeriodicTimeObserver(forInterval: intervel, queue: DispatchQueue.main) { (time) in
-            //guard let `self` = self else { return }
-            let currentDuration : Float64 = CMTimeGetSeconds(time)
-            self.musicSlider?.value = CFloat(currentDuration)
-            self.setUpSliderValues()
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleRouteChange), name: AVAudioSession.routeChangeNotification, object: nil)
+        //notificationCenter.addObserver(self, selector: #selector(replayMusicPlayer), name: Notification.Name.AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+
+    }
+    
+    //MARK:- Player Interruption
+    ///handle audio playback interruption
+    @objc private func handleInterruption(_ notification: Notification) {
+        
+        guard let userInfo = notification.userInfo,
+            let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                return
+        }
+        
+        switch type {
+            
+        case .began:
+            print("Interruption started")
+            ///interruption started, playback state should pause
+            DispatchQueue.main.async {
+                self.pause()
+            }
+            
+        case .ended:
+            print("Interruption ended")
+            ///interruption ended, playback state should resume
+            guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+            let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+            
+            DispatchQueue.main.async {
+                options.contains(.shouldResume) ? self.play() : self.pause()
+            }
+            
+        }
+        
+    }
+    
+    ///handle route change
+    @objc private func handleRouteChange(_ notification: Notification) {
+        
+        guard let userInfo = notification.userInfo,
+            let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+            let reason = AVAudioSession.RouteChangeReason(rawValue:reasonValue) else {
+                return
+        }
+        
+        switch reason {
+            
+        case .newDeviceAvailable:
+            checkHeadphonesConnection(outputs: AVAudioSession.sharedInstance().currentRoute.outputs)
+            
+        case .oldDeviceUnavailable:
+            guard let previousRoute = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription else { return }
+            checkHeadphonesConnection(outputs: previousRoute.outputs)
+            
+            DispatchQueue.main.async {
+                self.headphonesConnected ? () : self.pause()
+                
+            }
+            
+        default:
+            break
         }
     }
+    
+    
+    ///response to route change
+    private func checkHeadphonesConnection(outputs: [AVAudioSessionPortDescription]) {
+        for output in outputs where output.portType == AVAudioSession.Port.headphones {
+            headphonesConnected = true
+            break
+        }
+        headphonesConnected = false
+    }
+    
+    
+    //MARK:- Reachability changed
+    @objc func reachabilityChanged(note: Notification) {
+        guard let reachability = note.object as? Reachability else { return }
+        if reachability.connection != .none, !isConnected {
+            self.checkNetworkInterruption()
+        }
+        
+        isConnected = reachability.connection != .none
+    }
+    
+    //check if playback could keep up after network interruption
+    private func checkNetworkInterruption() {
+        
+        guard let item = playerItem,
+            !item.isPlaybackLikelyToKeepUp,
+            reachability.connection != .none else {
+                return
+        }
+        
+        player?.pause()
+        ///wait for a second to check if reload is needed after interruption
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+            if !item.isPlaybackLikelyToKeepUp {
+                ///reload if the current items playback is unlikely to keep up
+                self.reloadMusicPlayer()
+            }
+            ///if t
+            self.isPlaying ? self.player?.play() : self.player?.pause()
+        }
+    }
+    
+    
     
     func setUpSliderValues() {
         

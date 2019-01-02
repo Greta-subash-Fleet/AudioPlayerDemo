@@ -19,9 +19,7 @@ let kDebugLog = true
 let useLocalStations = true
 let stationDataURL   =  "https://mnmdev.nettvnepal.com.np/api/v2/fm/list" //"http://yoururl.com/json/stations.json"
 
-
-// Set this to "true" to enable the search bar
-let searchable = false
+let isFMPlayer = true
 
 
 // Set this to "false" to show the next/previous player buttons

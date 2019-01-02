@@ -20,7 +20,7 @@ class AudioItemsListViewController: UIViewController {
     //MARK:- properties
     let musicPlayer = AudioPlayer()
     
-    weak var playerViewController: PlayerViewController?
+     var playerViewController: PlayerViewController?
     
     //MARK:- Lists
     var audioItems = [FMStation]() {
@@ -34,9 +34,14 @@ class AudioItemsListViewController: UIViewController {
     
     fileprivate var isShuffleOn: Bool = false
     
+    var nowPlayingImageView: UIImageView!
+    
     //MARK:- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let storyboard = UIStoryboard.init(name: "AudioPlayer", bundle: nil)
+        self.playerViewController = storyboard.instantiateViewController(withIdentifier: "PlayerVC") as? PlayerViewController
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.getAudioItems()
@@ -45,9 +50,11 @@ class AudioItemsListViewController: UIViewController {
         
         tableView.backgroundColor = .clear
         tableView.backgroundView = nil
-        
+        self.tableView.separatorColor = .clear
+        self.automaticallyAdjustsScrollViewInsets = false
         self.navigationController?.navigationBar.barTintColor = UIColor.purple
         //self.miniPlayerView.isHidden = true
+        
 
         // Do any additional setup after loading the view.
     }
@@ -201,24 +208,69 @@ class AudioItemsListViewController: UIViewController {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
-    fileprivate func showMiniPlayer(sender: IndexPath) {
+    
+    
+    //MARK:- Now Playing bar animations
+    func createNowPlayingAnimation() {
         
-        let storyboard = UIStoryboard.init(name: "AudioPlayer", bundle: nil)
-        playerViewController = storyboard.instantiateViewController(withIdentifier: "PlayerVC") as? PlayerViewController
+        // Setup ImageView
+        nowPlayingImageView = UIImageView(image: UIImage(named: "NowPlayingBars-3"))
+        nowPlayingImageView.autoresizingMask = []
+        nowPlayingImageView.contentMode = UIView.ContentMode.center
+        
+        // Create Animation
+        nowPlayingImageView.animationImages = AnimationFrames.createFrames()
+        nowPlayingImageView.animationDuration = 0.7
+        
+        // Create Top BarButton
+        let barButton = UIButton(type: .custom)
+        barButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        barButton.addSubview(nowPlayingImageView)
+        nowPlayingImageView.center = barButton.center
+        
+        let barItem = UIBarButtonItem(customView: barButton)
+        self.navigationItem.rightBarButtonItem = barItem
+    }
+    
+    
+    func startNowPlayingAnimation(_ animate: Bool) {
+        animate ? nowPlayingImageView.startAnimating() : nowPlayingImageView.stopAnimating()
+    }
+    
+    
+    ///show mini player
+    fileprivate func showMiniPlayer(sender: IndexPath?) {
+        
+        guard let playerViewController = self.playerViewController else {return}
+       
         let isNew: Bool?
-        if let indexPath = sender as? IndexPath {
+        if let indexPath = sender {
             musicPlayer.audioStation = audioItems[indexPath.row]
             isNew = true
         } else {
             isNew = false
         }
-        playerViewController?.loadStation(audioStation: musicPlayer.audioStation, isNew: isNew!)
-        playerViewController?.delegate = self
-        playerViewController?.modalTransitionStyle = .flipHorizontal
-        playerViewController?.modalPresentationStyle = .overCurrentContext
-        self.present(playerViewController!, animated: false, completion: {
-            self.playerViewController?.show(self.miniPlayerView)
-        })
+        
+        playerViewController.loadStation(audioStation: musicPlayer.audioStation, isNew: isNew!)
+        playerViewController.delegate = self
+        playerViewController.modalTransitionStyle = .flipHorizontal
+        playerViewController.modalPresentationStyle = .overCurrentContext
+//        self.present(playerViewController!, animated: false, completion: {
+//            self.playerViewController?.show(self.miniPlayerView)
+//        })
+        
+        
+        if !playerViewController.view.isDescendant(of: self.view) {
+            self.addChild(playerViewController)
+            playerViewController.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+            self.view.addSubview((playerViewController.view)!)
+            playerViewController.didMove(toParent: self)
+
+        }
+        
+//        playerViewController?.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+//        self.view.addSubview((playerViewController?.view)!)
+//        playerViewController?.didMove(toParent: self)
         
     }
     
@@ -257,6 +309,7 @@ extension AudioItemsListViewController: UITableViewDelegate {
         musicPlayer.player.musicUrl = audioUrl
         
         self.showMiniPlayer(sender: indexPath)
+        self.createNowPlayingAnimation()
         //self.loadMiniPlayerFromNib()
         
     }
@@ -269,6 +322,7 @@ extension AudioItemsListViewController: AudioPlayerDelegate {
     
     func playbackStateDidChange(_ musicPlaybackState: MusicPlaybackState) {
         playerViewController?.musicPlayerPlaybackStateDidChange(musicPlaybackState, animate: true)
+        self.startNowPlayingAnimation(self.musicPlayer.player.isPlaying)
     }
     
     
@@ -371,10 +425,8 @@ extension AudioItemsListViewController: PlayingVCDelegate {
             
         }
         
-        
     }
     
-    
-    
+
     
 }
