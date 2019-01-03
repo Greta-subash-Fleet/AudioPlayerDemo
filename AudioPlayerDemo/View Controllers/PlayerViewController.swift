@@ -85,8 +85,8 @@ class PlayerViewController: UIViewController {
     //MARK:- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.addPanGesture()
-        //self.showOrHideControls()
+        //self.addPanGesture()
+        self.showOrHideControls()
         
         //self.view.backgroundColor = .clear
         
@@ -109,14 +109,12 @@ class PlayerViewController: UIViewController {
         //self.view.frame = CGRect(x: 0, y: self.topPositionOfPlayerView, width: self.view.frame.width, height: self.view.frame.height - self.topPositionOfPlayerView)
     }
     
+    
     fileprivate func showOrHideControls() {
         
       let hideControls = isFMPlayer
         if hideControls {
             buttonShowFMPlayer.isHidden = true
-            buttonRepeat.isHidden = true
-            buttonShuffle.isHidden = true
-            playerSlider.isHidden = true
         } else {
             self.addPanGesture()
         }
@@ -250,12 +248,12 @@ class PlayerViewController: UIViewController {
         sender.isSelected = !sender.isSelected
         
         if mPlayer.isPlaying {
-            buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
-            buttonMiniPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            buttonPlayPause.setImage(UIImage.imagePauseIcon, for: .normal)
+            buttonMiniPlayPause.setImage(UIImage.imagePauseIcon, for: .normal)
             
         } else {
-            buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
-            buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            buttonPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
+            buttonMiniPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
         }
     }
     
@@ -266,7 +264,7 @@ class PlayerViewController: UIViewController {
     @IBAction func buttonShuffleTapped(_ sender: UIButton){
         print("Shuffle Tapped")
         sender.isSelected = !sender.isSelected
-        _ = sender.isSelected ? "\(sender.setImage(UIImage(named: "audio_repeat"), for: UIControl.State()))" : "\(sender.setImage(UIImage(named: "audio_shuffle"), for: UIControl.State()))"
+        _ = sender.isSelected ? "\(sender.setImage(UIImage.imageRepeatIcon, for: UIControl.State()))" : "\(sender.setImage(UIImage.imageShuffleIcon, for: UIControl.State()))"
         self.delegate?.didPressShuffleButton(sender)
         
         
@@ -318,12 +316,12 @@ class PlayerViewController: UIViewController {
         self.delegate?.didPressPlayButton()
         sender.isSelected = !sender.isSelected
         if mPlayer.isPlaying {
-            buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
-            buttonMiniPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+            buttonPlayPause.setImage(UIImage.imagePauseIcon, for: .normal)
+            buttonMiniPlayPause.setImage(UIImage.imagePauseIcon, for: .normal)
             
         } else {
-            buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
-            buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+            buttonPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
+            buttonMiniPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
         }
 
     }
@@ -421,27 +419,35 @@ class PlayerViewController: UIViewController {
         
         switch musicPlaybackState {
         case .paused:
-            message = ""
+            message = "FM Player Paused."
+
+            
             if (buttonPlayPause != nil) {
-                buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+                buttonPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
+                //buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
             }
             if (buttonMiniPlayPause != nil) {
-                buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+                buttonMiniPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
+                //buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
             }
         case .playing:
-            message = ""
             print(message ?? "")
             if (buttonPlayPause != nil) {
-                buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+                buttonPlayPause.setImage(UIImage.imagePauseIcon, for: .normal)
+                //buttonPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
             }
             if (buttonMiniPlayPause != nil) {
-                buttonMiniPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
+                buttonMiniPlayPause.setImage(UIImage.imagePauseIcon, for: .normal)
+                //buttonMiniPlayPause.setImage(UIImage(named: "audio_pause"), for: .normal)
             }
 
             self.setUpTimeObserverForPlayerItem()
         default:
             message = ""
         }
+        
+
+        isAudioPlayingChanged(mPlayer.isPlaying)
         
     }
     
@@ -450,26 +456,47 @@ class PlayerViewController: UIViewController {
         switch musicPlayerState {
             
         case .readyToPlay, .loadingFinished:
-            message = ""
-            print(message ?? "")
+            musicPlayerPlaybackStateDidChange(mPlayer.musicPlaybackState, animate: animate)
             
         case .error:
+            message = "Error playing FM Player."
+            //show toast
+            HelperMethods.showToast(message: message ?? "Test")
+            
             if (buttonPlayPause != nil) {
-                buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+                //buttonPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+                buttonPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
             }
             
             if (buttonMiniPlayPause != nil) {
-                buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+                //buttonMiniPlayPause.setImage(UIImage(named: "audio_play"), for: .normal)
+                buttonMiniPlayPause.setImage(UIImage.imagePlayIcon, for: .normal)
             }
+            
+        case .loading:
+            message = "Loading FM Player."
+            //show toast
+            HelperMethods.showToast(message: message ?? "")
+            
+        case .urlNotSet:
+            message = "Invalid Player URL."
+            //show toast
+            HelperMethods.showToast(message: message ?? "")
             
         default:
             message = ""
         }
-        musicPlayerPlaybackStateDidChange(mPlayer.musicPlaybackState, animate: animate)
+        //musicPlayerPlaybackStateDidChange(mPlayer.musicPlaybackState, animate: animate)
+        
+        //show toast message
+   
+        
+        //HelperMethods.showToast(message: message ?? "Test")
     }
     
     func isAudioPlayingChanged(_ isPlaying: Bool) {
         buttonPlayPause.isSelected = isPlaying
+        buttonMiniPlayPause.isSelected = isPlaying
     }
     
 

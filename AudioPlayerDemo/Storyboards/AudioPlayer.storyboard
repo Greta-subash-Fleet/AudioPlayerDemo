@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sac-mi-Yjg">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="503"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AudioItemsCell" rowHeight="105" id="r1E-xy-rkW" customClass="AudioItemsTableViewCell" customModule="AudioPlayerDemo" customModuleProvider="target">
@@ -115,27 +115,23 @@
                                 <rect key="frame" x="0.0" y="567" width="375" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="AM1-GZ-su6"/>
+                                    <constraint firstAttribute="height" constant="100" id="qG0-Fp-1Tz"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.12549019610000001" green="0.090196078430000007" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Mbk-Fv-DAq" firstAttribute="bottom" secondItem="sac-mi-Yjg" secondAttribute="bottom" id="0dp-7q-w73"/>
+                            <constraint firstItem="OMf-31-07l" firstAttribute="top" secondItem="sac-mi-Yjg" secondAttribute="bottom" id="DPn-ua-Sit"/>
+                            <constraint firstItem="sac-mi-Yjg" firstAttribute="top" secondItem="Mbk-Fv-DAq" secondAttribute="top" id="EjC-uk-fCt"/>
                             <constraint firstItem="sac-mi-Yjg" firstAttribute="top" secondItem="Mbk-Fv-DAq" secondAttribute="top" id="FlY-UV-NWS"/>
-                            <constraint firstItem="OMf-31-07l" firstAttribute="trailing" secondItem="Mbk-Fv-DAq" secondAttribute="trailing" id="G9l-bw-ycF"/>
-                            <constraint firstItem="OMf-31-07l" firstAttribute="bottom" secondItem="Mbk-Fv-DAq" secondAttribute="bottom" id="UOR-4a-Vpj"/>
+                            <constraint firstItem="OMf-31-07l" firstAttribute="trailing" secondItem="Mbk-Fv-DAq" secondAttribute="trailing" id="UMr-Ib-nqy"/>
+                            <constraint firstItem="OMf-31-07l" firstAttribute="bottom" secondItem="Mbk-Fv-DAq" secondAttribute="bottom" id="ZvH-wE-Qvt"/>
                             <constraint firstItem="Mbk-Fv-DAq" firstAttribute="trailing" secondItem="sac-mi-Yjg" secondAttribute="trailing" id="bj7-Em-eCe"/>
+                            <constraint firstItem="OMf-31-07l" firstAttribute="leading" secondItem="Mbk-Fv-DAq" secondAttribute="leading" id="lvw-Yz-kpc"/>
                             <constraint firstItem="sac-mi-Yjg" firstAttribute="leading" secondItem="Mbk-Fv-DAq" secondAttribute="leading" id="meg-8Z-pJD"/>
-                            <constraint firstItem="OMf-31-07l" firstAttribute="top" secondItem="sac-mi-Yjg" secondAttribute="bottom" id="yq5-NF-iHe"/>
-                            <constraint firstItem="OMf-31-07l" firstAttribute="leading" secondItem="Mbk-Fv-DAq" secondAttribute="leading" id="z2U-SJ-Alo"/>
+                            <constraint firstItem="sac-mi-Yjg" firstAttribute="top" secondItem="Mbk-Fv-DAq" secondAttribute="top" id="nt4-AT-fwF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Mbk-Fv-DAq"/>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="OMf-31-07l"/>
-                            </mask>
-                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="9OZ-Cd-SDX"/>
                     <connections>

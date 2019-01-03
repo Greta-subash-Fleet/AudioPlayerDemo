@@ -129,6 +129,8 @@ open class MusicPlayer: NSObject {
         }
     }
     
+    open var isAutoPlay = true
+    
     
     ///check if the player is playing
     open var isPlaying: Bool {
@@ -167,7 +169,7 @@ open class MusicPlayer: NSObject {
     //MARK:- Private properties, for avplayer
     open var player: AVPlayer?
     
-    private var lastplayerItem: AVPlayerItem?
+    private var lastPlayerItem: AVPlayerItem?
     
     // Check for headphones, used to handle audio route change
     private var headphonesConnected: Bool = false
@@ -187,21 +189,24 @@ open class MusicPlayer: NSObject {
     
     
     //MARK:- Init
-//    var updater: CADisplayLink! = nil
-//    var progress: UISlider!
+
     private override init() {
         super.init()
         self.setUpNotifications()
-//        updater = CADisplayLink(target: self, selector: #selector(MusicPlayer.updateProgressView))
-//        updater.preferredFramesPerSecond = 1
-//        updater.add(to: RunLoop.current, forMode: RunLoop.Mode.default)
+        
+        ///bluetooth playback
+        
+        ///Check for headphones
+        checkHeadphonesConnection(outputs: AVAudioSession.sharedInstance().currentRoute.outputs)
+        
+        ///network reachability configuration
+        try? reachability.startNotifier()
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(note:)), name: .reachabilityChanged, object: reachability)
+        isConnected = reachability.connection != .none
+
     }
     
-    @objc func updateProgressView() {
-        print("Update slider")
 
-
-    }
     
     
     //MARK:- Music player control methods
@@ -224,6 +229,8 @@ open class MusicPlayer: NSObject {
         }
         player.pause()
         musicPlaybackState = .paused
+        //show toast
+        
     }
     
     
@@ -286,6 +293,31 @@ open class MusicPlayer: NSObject {
     ///reset all observers and create new ones
     private func playerItemDidChange() {
         
+        guard lastPlayerItem != playerItem else { return }
+        
+        if let item = lastPlayerItem {
+            pause()
+            
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: item)
+            item.removeObserver(self, forKeyPath: "status")
+            item.removeObserver(self, forKeyPath: "playbackBufferEmpty")
+            item.removeObserver(self, forKeyPath: "playbackLikelyToKeepUp")
+        }
+        
+        lastPlayerItem = playerItem
+        
+        if let item = playerItem {
+            
+            item.addObserver(self, forKeyPath: "status", options: NSKeyValueObservingOptions.new, context: nil)
+            item.addObserver(self, forKeyPath: "playbackBufferEmpty", options: NSKeyValueObservingOptions.new, context: nil)
+            item.addObserver(self, forKeyPath: "playbackLikelyToKeepUp", options: NSKeyValueObservingOptions.new, context: nil)
+            
+            player?.replaceCurrentItem(with: item)
+            if isAutoPlay { play() }
+        }
+        
+        delegate?.musicPlayer?(self, playerItemDidChange: musicUrl)
+
     }
     
     
@@ -327,7 +359,7 @@ open class MusicPlayer: NSObject {
     private func resetMusicPlayer() {
         self.stop()
         playerItem = nil
-        lastplayerItem = nil
+        lastPlayerItem = nil
         player = nil
     }
     
@@ -335,6 +367,7 @@ open class MusicPlayer: NSObject {
     deinit {
         self.resetMusicPlayer()
         //remove notification observers as well
+        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -344,7 +377,6 @@ open class MusicPlayer: NSObject {
     var currentDuration: String?
     var currentTime: String? {
         didSet {
-            self.displayCurrentTime()
         }
     }
     var totalDuration: String?
@@ -390,6 +422,8 @@ open class MusicPlayer: NSObject {
         
     }
     
+    
+    //MARK:- Audio Route changed
     ///handle route change
     @objc private func handleRouteChange(_ notification: Notification) {
         
@@ -436,7 +470,12 @@ open class MusicPlayer: NSObject {
             self.checkNetworkInterruption()
         }
         
+        if reachability.connection == .none {
+            HelperMethods.showToast(message: "No Internet Connection.")
+        }
+        
         isConnected = reachability.connection != .none
+   
     }
     
     //check if playback could keep up after network interruption
@@ -449,6 +488,9 @@ open class MusicPlayer: NSObject {
         }
         
         player?.pause()
+        self.pause()
+
+        
         ///wait for a second to check if reload is needed after interruption
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
             if !item.isPlaybackLikelyToKeepUp {
@@ -461,52 +503,42 @@ open class MusicPlayer: NSObject {
     }
     
     
-    
-    func setUpSliderValues() {
+    //MARK:- Key value observer
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
-        guard let currentItem = self.player?.currentItem else{
-            return
-        }
-        
-        // Get the current time in seconds
-        let playhead = currentItem.currentTime().seconds
-        let duration = currentItem.duration.seconds
-        // Format seconds for human readable string
-        
-        if playhead.isFinite{
-            let time = self.calculateTimeFromNSTimeInterval(playhead)
-            currentDuration = "\(time.minute):\(time.second)"
-            print("Current Duration: \(String(describing: currentDuration))")
-            displayCurrentTime()
-        }
-        
-        if duration.isFinite{
+        if let item = object as? AVPlayerItem, let keyPath = keyPath, item == self.playerItem {
             
-            let time = self.calculateTimeFromNSTimeInterval(duration)
-            totalDuration = "\(time.minute):\(time.second)"
-            print("Total Duration: \(String(describing: totalDuration))")
-            self.musicSlider?.maximumValue = Float(duration)
+            switch keyPath {
+                
+            case "status":
+                if player?.status == AVPlayer.Status.readyToPlay {
+                    self.playerState = .readyToPlay
+                    print("ready to play")
+                } else if player?.status == AVPlayer.Status.failed {
+                    self.playerState = .error
+                    print("Error")
+                }
+                
+            case "playbackBufferEmpty":
+                
+                if item.isPlaybackBufferEmpty {
+                    self.playerState = .loading
+                    self.checkNetworkInterruption()
+                    print("Buffer empty")
+                }
+                
+            case "playbackLikelyToKeepUp":
+                self.playerState = item.isPlaybackLikelyToKeepUp ? .loadingFinished : .error
+                print("Playback likely to keep up")
+                
+            default:
+                break
+            }
         }
     }
     
-    func displayCurrentTime() {
-        //currentTime = currentDuration ?? ""
-    }
     
-  
-    
-    
-    //This returns song length
-    fileprivate func calculateTimeFromNSTimeInterval(_ duration:TimeInterval) ->(minute:String, second:String){
-        //         let hour_   = abs(Int(duration)/3600)
-        let minute_ = abs(Int((duration/60).truncatingRemainder(dividingBy: 60)))
-        let second_ = abs(Int(duration.truncatingRemainder(dividingBy: 60)))
-        
-        //        var hour = hour_ > 9 ? "\(hour_)" : "0\(hour_)"
-        let minute = minute_ > 9 ? "\(minute_)" : "0\(minute_)"
-        let second = second_ > 9 ? "\(second_)" : "0\(second_)"
-        return (minute,second)
-    }
+
 
     
 }

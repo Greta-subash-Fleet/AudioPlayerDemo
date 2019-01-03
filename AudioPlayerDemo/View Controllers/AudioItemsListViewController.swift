@@ -262,6 +262,15 @@ class AudioItemsListViewController: UIViewController {
         
         
         if !playerViewController.view.isDescendant(of: self.view) {
+            let hideControls = isFMPlayer
+            if hideControls {
+                self.addChild(playerViewController)
+                playerViewController.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+                self.view.addSubview((playerViewController.view)!)
+                playerViewController.didMove(toParent: self)
+                playerViewController.show(self.miniPlayerView)
+                return
+            }
             self.addChild(playerViewController)
             playerViewController.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
             self.view.addSubview((playerViewController.view)!)
@@ -294,10 +303,11 @@ extension AudioItemsListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: AudioItemsTableViewCell = tableView.dequeueReusableCell(withIdentifier: "AudioItemsCell", for: indexPath) as! AudioItemsTableViewCell
-        //cell.labelAudioTitle.text = audioItems[indexPath.row].name
+        
+   
         
         cell.setUpCells(audioItems[indexPath.row])
-        //cell.labelAudioTitle.text = audioItems[indexPath.row].mediaTitle
+        cell.changeContainerLayout(cell.contentView)
         return cell
     }
     
@@ -308,6 +318,14 @@ extension AudioItemsListViewController: UITableViewDataSource {
 extension AudioItemsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let cell: AudioItemsTableViewCell = tableView.dequeueReusableCell(withIdentifier: "AudioItemsCell", for: indexPath) as! AudioItemsTableViewCell
+        
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = UIColor.red
+        cell.selectedBackgroundView?.backgroundColor = UIColor.red
+        
+        
         guard let audioUrl = URL(string: audioItems[indexPath.row].mediaUrl!) else {
             return
         }
@@ -451,4 +469,20 @@ extension AudioItemsListViewController: PlayingVCDelegate {
     
 
     
+}
+
+
+//MARK:- Extension to change container layout in tableview cells
+extension UITableViewCell {
+    func changeContainerLayout(_ view: UIView) {
+        let containerView = view
+        containerView.layer.borderColor = UIColor.purple.cgColor
+        containerView.layer.borderWidth = 1.0
+        //containerView.layer.cornerRadius = 10
+        containerView.backgroundColor = UIColor.white
+        self.backgroundColor = .clear
+        //self.selectionStyle = .none
+        self.selectionStyle = .blue
+        
+    }
 }
