@@ -192,6 +192,7 @@
 		CE25BF0B21C8C00F0047FEBB /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				CE368E5821DDD66400C637AF /* Utilities */,
 				CE2AF6A921DC7AF600384924 /* Reachability */,
 				CE25BF0C21C8C0240047FEBB /* MusicPlayer */,
 				CEAA729E21CCC58100A3EA01 /* Animations */,
@@ -238,6 +239,13 @@
 				CE2AF6AA21DC7B1700384924 /* Reachability.swift */,
 			);
 			path = Reachability;
+			sourceTree = "<group>";
+		};
+		CE368E5821DDD66400C637AF /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		CEAA729E21CCC58100A3EA01 /* Animations */ = {

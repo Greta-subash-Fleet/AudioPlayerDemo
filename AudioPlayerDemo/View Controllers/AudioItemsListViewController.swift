@@ -295,7 +295,9 @@ extension AudioItemsListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: AudioItemsTableViewCell = tableView.dequeueReusableCell(withIdentifier: "AudioItemsCell", for: indexPath) as! AudioItemsTableViewCell
         //cell.labelAudioTitle.text = audioItems[indexPath.row].name
-        cell.labelAudioTitle.text = audioItems[indexPath.row].mediaTitle
+        
+        cell.setUpCells(audioItems[indexPath.row])
+        //cell.labelAudioTitle.text = audioItems[indexPath.row].mediaTitle
         return cell
     }
     
@@ -311,8 +313,9 @@ extension AudioItemsListViewController: UITableViewDelegate {
         }
         //guard let audioUrl = URL(string: audioItems[indexPath.row].streamURL!) else { return }
         musicPlayer.player.musicUrl = audioUrl
-        
         self.showMiniPlayer(sender: indexPath)
+        let index = indexPath.item
+        self.setUpPlayerLabels(audioItems[index])
         self.createNowPlayingAnimation()
         //self.loadMiniPlayerFromNib()
         
@@ -418,10 +421,14 @@ extension AudioItemsListViewController: PlayingVCDelegate {
     
     
     ///play the selected audio item
-    func changeAudioItem() {
+    fileprivate func changeAudioItem() {
         if let audioPlayingVC = playerViewController {
             audioPlayingVC.loadStation(audioStation: musicPlayer.audioStation, isNew: false)
-            
+            //audioPlayingVC.labelArtistTitle.text
+            guard let audioIndex = getAudioStationsCount(of: musicPlayer.audioStation!) else { return }
+            ///change the selected row when player item is changed
+            tableView.selectRow(at: IndexPath(item: audioIndex, section: 0), animated: false, scrollPosition: UITableView.ScrollPosition.none)
+            setUpPlayerLabels(audioItems[audioIndex])
             
         } else if let audioStation = musicPlayer.audioStation {
             //musicPlayer.player.musicUrl = URL(string: audioStation.streamURL ?? "")
@@ -429,6 +436,17 @@ extension AudioItemsListViewController: PlayingVCDelegate {
             
         }
         
+    }
+    
+    ///display station/music information in player and mini player
+    fileprivate func setUpPlayerLabels(_ fmStations: FMStation?) {
+        //for main player
+        playerViewController?.labelArtistTitle.text = fmStations?.mediaTitle
+        playerViewController?.labelSongTitle.text = fmStations?.mediaTitle
+        
+        //for mini player
+        playerViewController?.labelMiniSongTitle.text = fmStations?.mediaTitle
+        playerViewController?.labelMiniArtistTitle.text = fmStations?.mediaTitle
     }
     
 

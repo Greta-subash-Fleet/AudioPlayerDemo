@@ -26,5 +26,11 @@ class AudioItemsTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func setUpCells(_ fmStations: FMStation?) {
+        self.labelAudioTitle.text = fmStations?.mediaTitle
+        self.labelAudioAlbum.text = fmStations?.mediaArt
+        self.labelAudioArtist.text = fmStations?.mediaArt
+    }
 
 }
